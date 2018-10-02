@@ -3,6 +3,29 @@
   <form addrulepath="/administrator/components/com_okeydoc/models/rules">
   <fieldset name="details" addfieldpath="/administrator/components/com_categories/models/fields">
 
+	<field name="file_location" type="list" 
+		label="COM_OKEYDOC_FILE_LOCATION_LABEL"
+		description="COM_OKEYDOC_FILE_LOCATION_DESC"
+		class="inputbox" default="server">
+		<option value="server">COM_OKEYDOC_FILE_LOCATION_SERVER</option>
+		<option value="url">COM_OKEYDOC_FILE_LOCATION_URL</option>
+	</field>
+
+	<field name="uploaded_file" type="file"
+		label="COM_OKEYDOC_FIELD_METHOD_SERVER_LABEL"
+		description="COM_OKEYDOC_FIELD_METHOD_SERVER_DESC"
+		required="false" />
+
+	<field name="file_url" type="text"
+		label="COM_OKEYDOC_FIELD_METHOD_URL_LABEL"
+		description="COM_OKEYDOC_FIELD_METHOD_URL_DESC"
+		required="false" />
+
+	<field name="author" type="text"
+		label="COM_OKEYDOC_FIELD_AUTHOR_LABEL"
+		description="COM_OKEYDOC_FIELD_AUTHOR_DESC"
+		required="true" />
+
 	<field name="documenttext" type="editor"
 	       label="COM_OKEYDOC_FIELD_DESCRIPTION_LABEL"
 	       description="COM_OKEYDOC_FIELD_DESCRIPTION_DESC"
@@ -40,6 +63,18 @@
 	<field name="tags" type="tag" label="JTAG" 
 	       description="JTAG_DESC"
 	       class="inputbox" multiple="true">
+	</field>
+
+	<field name="contcatids" type="contentcategories" multiple="multiple"
+		label="COM_OKEYDOC_FIELD_ARTICLE_CATEGORIES_LABEL"
+		description="COM_OKEYDOC_FIELD_ARTICLE_CATEGORIES_DESC"
+		class="inputbox" >
+	</field>
+
+	<field name="articleids" type="articles" multiple="multiple"
+		label="COM_OKEYDOC_FIELD_ARTICLES_LABEL"
+		description="COM_OKEYDOC_FIELD_ARTICLES_DESC"
+		class="inputbox" >
 	</field>
 
 	<!-- layout: publishingdata -->
@@ -107,6 +142,8 @@
 	<field name="checked_out" type="hidden" filter="unset" />
 	<field name="checked_out_time" type="hidden" filter="unset" />
 	<field name="asset_id" type="hidden" filter="unset" />
+	<field name="replace_file" type="hidden" default="0" filter="unset" />
+	<field name="current_file_location" type="hidden" filter="unset" />
     </fieldset>
 
     <fields name="metadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">

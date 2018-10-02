@@ -80,7 +80,7 @@ if ($saveOrder)
 						</th>
 						<!-- Override: Adds the Files column. -->
 						<th class="nowrap">
-							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+							<?php echo JText::_('COM_OKEYDOC_TITLE_FILES'); ?>
 						</th>
 						<?php if (isset($this->items[0]) && property_exists($this->items[0], 'count_published')) :
 							$columns++; ?>

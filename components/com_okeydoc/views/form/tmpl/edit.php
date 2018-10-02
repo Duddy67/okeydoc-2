@@ -66,21 +66,44 @@ Joomla.submitbutton = function(task)
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#details" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_DETAILS') ?></a></li>
 		<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_PUBLISHING') ?></a></li>
+		<li><a href="#link-document" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_LINK_DOCUMENT') ?></a></li>
 		<li><a href="#language" data-toggle="tab"><?php echo JText::_('JFIELD_LANGUAGE_LABEL') ?></a></li>
 		<li><a href="#metadata" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_METADATA') ?></a></li>
 	</ul>
 
 	<div class="tab-content">
 	    <div class="tab-pane active" id="details">
-	      <?php echo $this->form->renderField('title'); ?>
-	      <?php echo $this->form->renderField('alias'); ?>
+	      <?php echo $this->form->getControlGroup('title'); 
+		    echo $this->form->getControlGroup('alias');
+		?>
 
 	      <?php if($this->form->getValue('id') != 0) : //Existing item. ?>
+		  <div class="control-group">
+		    <div class="control-label">
+		      <?php echo JText::_('COM_OKEYDOC_FIELD_DOWNLOAD_LABEL'); ?>
+		    </div>
+		    <div class="controls">
+		      <a href="<?php echo $uri->root().'media/com_okeydoc/download.php?id='.$this->item->id; ?>" class="btn btn-success" target="_blank">
+			<span class="icon-download"></span>&#160;<?php echo JText::_('COM_OKEYDOC_BUTTON_DOWNLOAD'); ?>
+		      </a>
+		    </div>
+		  </div>
+		<?php echo $this->form->getControlGroup('file_name'); ?>
 
+		  <?php //Toggle button which hide/show the link method fields to replace the original file. ?>
+		  <span class="form-space"></span>
+		  <a href="#" id="switch_replace" style="margin-bottom:10px;" class="btn">
+		    <span id="replace-title"><?php echo JText::_('COM_OKEYDOC_REPLACE'); ?></span>
+		    <span id="cancel-title"><?php echo JText::_('JCANCEL'); ?></span></a>
+		  <span class="form-space"></span>
 	      <?php endif; ?>
 
 	      <?php
-		echo $this->form->getControlGroup('documenttext');
+		    echo $this->form->getControlGroup('file_location');
+		    echo $this->form->getControlGroup('uploaded_file');
+		    echo $this->form->getControlGroup('file_url');
+		    echo $this->form->getControlGroup('author');
+		    echo $this->form->getControlGroup('documenttext');
 	      ?>
 	      </div>
 
@@ -100,12 +123,27 @@ Joomla.submitbutton = function(task)
 		<?php echo $this->form->getControlGroup('language'); ?>
 	      </div>
 
+	      <div class="tab-pane" id="link-document">
+		<?php echo $this->form->getControlGroup('contcatids'); ?>
+		<?php echo $this->form->getControlGroup('articleids'); ?>
+		<span class="link-document-space"></span>
+	      </div>
+
 	      <div class="tab-pane" id="metadata">
 		<?php echo $this->form->getControlGroup('metadesc'); ?>
 		<?php echo $this->form->getControlGroup('metakey'); ?>
 	      </div>
 	    </div>
 
+	    <?php
+		  //Hidden input flag to check if a file replacement is required.
+		  echo $this->form->getInput('replace_file'); 
+		  //In case of file replacement the current file location will be needed.
+		  $this->form->setValue('current_file_location', null, $this->item->file_location);
+		  echo $this->form->getInput('current_file_location'); 
+	      ?>
+
+    <?php echo $this->form->getInput('id'); ?>
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="return" value="<?php echo $this->return_page; ?>" />
     <?php if($this->params->get('enable_category', 0) == 1) :?>
@@ -115,4 +153,10 @@ Joomla.submitbutton = function(task)
     </fieldset>
   </form>
 </div>
+
+<?php
+
+$doc = JFactory::getDocument();
+//Load the jQuery script(s).
+$doc->addScript(JURI::base().'administrator/components/com_okeydoc/js/document.js');
 
