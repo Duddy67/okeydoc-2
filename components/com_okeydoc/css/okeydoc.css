@@ -42,3 +42,10 @@
   overflow: hidden;
 }
 
+.file-icon {
+  display: block;
+  float: left;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+

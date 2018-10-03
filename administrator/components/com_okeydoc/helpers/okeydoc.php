@@ -7,6 +7,8 @@
 
 
 defined('_JEXEC') or die; //No direct access to this file.
+jimport('joomla.filesystem.folder');
+jimport('joomla.filesystem.file');
 
 
 
@@ -134,6 +136,7 @@ class OkeydocHelper
     //Gets the files array.
     $files = JFactory::getApplication()->input->files->get('jform');
 
+file_put_contents('debog_file.txt', print_r($files, true)); 
     if($files['uploaded_file']['error'] > 0) {
       JFactory::getApplication()->enqueueMessage(JText::_('COM_OKEYDOC_FILES_ERROR_'.$files['uploaded_file']['error']), 'warning');
       return false;

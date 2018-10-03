@@ -330,7 +330,8 @@ class OkeydocModelCategory extends JModelList
     $query = $db->getQuery(true);
 
     // Select required fields from the categories.
-    $query->select($this->getState('list.select', 'd.id,d.title,d.alias,d.intro_text,d.full_text,d.catid,d.published,'.
+    $query->select($this->getState('list.select', 'd.id,d.title,d.alias,d.intro_text,d.full_text,d.catid,d.published,d.file_location,'.
+	                           'd.file_name,d.file_icon,d.file_type,d.file_size,d.file_icon,d.downloads,d.author AS file_author,'.
 	                           'd.checked_out,d.checked_out_time,d.created,d.created_by,d.access,d.params,d.metadata,'.
 				   'd.metakey,d.metadesc,d.hits,d.publish_up,d.publish_down,d.language,d.modified,d.modified_by'))
 	  ->from($db->quoteName('#__okeydoc_document').' AS d')

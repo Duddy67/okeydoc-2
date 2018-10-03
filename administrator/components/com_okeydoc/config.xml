@@ -144,6 +144,66 @@
 	       <option value="0">JHIDE</option>
 	</field>
 
+	<field name="show_file_name"
+		type="radio"
+		class="btn-group btn-group-yesno"
+		label="COM_OKEYDOC_FIELD_SHOW_FILE_NAME_LABEL"
+		description="COM_OKEYDOC_FIELD_SHOW_FILE_NAME_DESC"
+		default="1">
+		<option value="1">JSHOW</option>
+		<option value="0">JHIDE</option>
+	</field>
+
+	<field name="show_file_size"
+		type="radio"
+		class="btn-group btn-group-yesno"
+		label="COM_OKEYDOC_FIELD_SHOW_FILE_SIZE_LABEL"
+		description="COM_OKEYDOC_FIELD_SHOW_FILE_SIZE_DESC"
+		default="1">
+		<option value="1">JSHOW</option>
+		<option value="0">JHIDE</option>
+	</field>
+
+	<field name="show_file_type"
+		type="radio"
+		class="btn-group btn-group-yesno"
+		label="COM_OKEYDOC_FIELD_SHOW_FILE_TYPE_LABEL"
+		description="COM_OKEYDOC_FIELD_SHOW_FILE_TYPE_DESC"
+		default="1">
+		<option value="1">JSHOW</option>
+		<option value="0">JHIDE</option>
+	</field>
+
+	<field name="show_file_author"
+		type="radio"
+		class="btn-group btn-group-yesno"
+		label="COM_OKEYDOC_FIELD_SHOW_FILE_AUTHOR_LABEL"
+		description="COM_OKEYDOC_FIELD_SHOW_FILE_AUTHOR_DESC"
+		default="1">
+		<option value="1">JSHOW</option>
+		<option value="0">JHIDE</option>
+	</field>
+
+	<field name="show_extension_icon"
+		type="radio"
+		class="btn-group btn-group-yesno"
+		label="COM_OKEYDOC_FIELD_SHOW_EXTENSION_ICON_LABEL"
+		description="COM_OKEYDOC_FIELD_SHOW_EXTENSION_ICON_DESC"
+		default="1">
+		<option value="1">JSHOW</option>
+		<option value="0">JHIDE</option>
+	</field>
+
+	<field name="show_downloads"
+		type="radio"
+		class="btn-group btn-group-yesno"
+		label="COM_OKEYDOC_FIELD_SHOW_DOWNLOADS_LABEL"
+		description="COM_OKEYDOC_FIELD_SHOW_DOWNLOADS_DESC"
+		default="1">
+		<option value="1">JSHOW</option>
+		<option value="0">JHIDE</option>
+	</field>
+
 	<field name="show_create_date"
 	       type="radio"
 	       default="1"

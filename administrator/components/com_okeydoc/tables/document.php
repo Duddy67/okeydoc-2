@@ -11,6 +11,7 @@ require_once JPATH_ROOT.'/administrator/components/com_okeydoc/helpers/okeydoc.p
  
 // import Joomla table library
 jimport('joomla.database.table');
+JIMPORT('joomla.filesystem.file');
  
 use Joomla\Registry\Registry;
 

@@ -9,6 +9,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 require_once JPATH_COMPONENT_SITE.'/helpers/route.php';
+require_once JPATH_ROOT.'/administrator/components/com_okeydoc/helpers/okeydoc.php';
 
 /**
  * HTML View class for the Okey DOC 2 component.
@@ -49,7 +50,7 @@ class OkeydocViewDocument extends JViewLegacy
 
     $this->nowDate = JFactory::getDate()->toSql();
 
-    //$this->setDocument();
+    $this->setDocument();
 
     parent::display($tpl);
   }
@@ -58,8 +59,8 @@ class OkeydocViewDocument extends JViewLegacy
   protected function setDocument() 
   {
     //Include css files (if needed).
-    //$doc = JFactory::getDocument();
-    //$doc->addStyleSheet(JURI::base().'components/com_okeydoc/css/okeydoc.css');
+    $doc = JFactory::getDocument();
+    $doc->addStyleSheet(JURI::base().'components/com_okeydoc/css/okeydoc.css');
   }
 }
 

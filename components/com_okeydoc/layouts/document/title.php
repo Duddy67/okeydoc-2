@@ -17,6 +17,10 @@ $nowDate = $displayData['now_date'];
 
 <?php if($params->get('show_title') || $item->published == 0 || ($params->get('show_author') && !empty($item->author))) : ?>
   <div class="page-header">
+    <?php if($params->get('show_extension_icon')) : ?>
+      <img src="media/com_okeydoc/extensions/<?php echo $item->file_icon; ?>" class="file-icon" 
+	   alt="<?php echo $item->file_icon; ?>" width="16" height="16" />
+    <?php endif; ?>
     <?php if($params->get('show_title')) : ?>
 	    <h2>
 	      <?php if($params->get('link_title') && $params->get('access-view')) :

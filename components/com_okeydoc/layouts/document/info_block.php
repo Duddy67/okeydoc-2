@@ -75,5 +75,55 @@ defined('JPATH_BASE') or die;
       <?php echo JText::sprintf('COM_OKEYDOC_DOCUMENT_HITS', $displayData['item']->hits); ?>
     </dd>
   <?php endif; ?>
+
+  <?php if($displayData['params']->get('show_file_name')) :
+          $fileName = $displayData['item']->file_name;
+          if($displayData['item']->file_location == 'server') {
+	    preg_match('#\.([a-z0-9]+)$#', $displayData['item']->file_name, $matches);
+	    $fileName = $displayData['item']->alias.'.'.$matches[1];
+	  }
+    ?>
+    <dd class="file">
+    <span class="icon-file"></span>
+    <meta itemprop="interactionCount" content="UserPageVisits:<?php echo $fileName; ?>" />
+      <?php echo JText::sprintf('COM_OKEYDOC_FILE_NAME', $fileName); ?>
+    </dd>
+  <?php endif; ?>
+
+  <?php if($displayData['params']->get('show_file_size')) :
+          if($displayData['item']->file_size == 'unknown') {
+	    $fileSize = JText::_('COM_OKEYDOC_UNKNOWN');
+	  }
+          else {
+	    $conversion = OkeydocHelper::byteConverter($displayData['item']->file_size);
+	    $fileSize = JText::sprintf('COM_OKEYDOC_BYTE_CONVERTER_'.$conversion['multiple'], $conversion['result']);
+	  }
+    ?>
+    <dd class="file">
+    <span class="icon-file"></span>
+      <?php echo JText::sprintf('COM_OKEYDOC_FILE_SIZE', $fileSize); ?>
+    </dd>
+  <?php endif; ?>
+
+  <?php if($displayData['params']->get('show_file_type')) : ?>
+    <dd class="file">
+    <span class="icon-file"></span>
+      <?php echo JText::sprintf('COM_OKEYDOC_FILE_TYPE', $displayData['item']->file_type); ?>
+    </dd>
+  <?php endif; ?>
+
+  <?php if($displayData['params']->get('show_file_author')) : ?>
+    <dd class="file">
+    <span class="icon-user"></span>
+      <?php echo JText::sprintf('COM_OKEYDOC_FILE_AUTHOR', $displayData['item']->file_author); ?>
+    </dd>
+  <?php endif; ?>
+
+  <?php if($displayData['params']->get('show_downloads')) : ?>
+    <dd class="download">
+    <span class="icon-download"></span>
+      <?php echo JText::sprintf('COM_OKEYDOC_FILE_DOWNLOADS', $displayData['item']->downloads); ?>
+    </dd>
+  <?php endif; ?>
 </dl>
 
