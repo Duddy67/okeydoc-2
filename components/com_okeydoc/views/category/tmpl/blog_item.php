@@ -61,7 +61,8 @@ $params = $this->item->params;
 	      $link = $comUserLink;
 	    }
 
-	    echo JLayoutHelper::render('document.download', array('item' => $this->item, 'params' => $params, 'link' => $link)); 
+	    echo JLayoutHelper::render('document.download', array('item' => $this->item, 'params' => $params,
+								  'link' => $link, 'view' => 'category')); 
 	  }
    endif; ?>
 </div>

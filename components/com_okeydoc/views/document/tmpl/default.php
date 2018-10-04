@@ -46,4 +46,9 @@ $item = $this->item;
 	  <?php $this->item->tagLayout = new JLayoutFile('joomla.content.tags'); 
 		echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
   <?php endif; ?>
+
+  <?php $link = JUri::base().'media/com_okeydoc/download.php?id='.$this->item->id;
+	echo JLayoutHelper::render('document.download', array('item' => $this->item, 'params' => $params,
+							      'link' => $link, 'view' => 'document')); ?>
 </div>
+

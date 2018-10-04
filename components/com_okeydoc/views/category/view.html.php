@@ -238,18 +238,6 @@ class OkeydocViewCategory extends JViewCategory
   }
 
 
-  protected function getComUserLink($item) 
-  {
-    $menu = JFactory::getApplication()->getMenu();
-    $active = $menu->getActive();
-    $itemId = $active->id;
-    $link = new JUri(JRoute::_('index.php?option=com_users&view=login&Itemid='.$itemId, false));
-    $link->setVar('return', base64_encode(JRoute::_(OkeydocHelperRoute::getDocumentRoute($item->slug, $item->catid,
-											 $item->language), false)));
-    return $link;
-  }
-
-
   protected function setDocument() 
   {
     //Include css file (if needed).
