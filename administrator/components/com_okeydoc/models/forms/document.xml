@@ -250,6 +250,66 @@
 	       <option value="0">JHIDE</option>
 	</field>
 
+	<field name="show_file_name"
+	       type="list"
+	       class="chzn-color"
+	       label="COM_OKEYDOC_FIELD_SHOW_FILE_NAME_LABEL"
+	       description="COM_OKEYDOC_FIELD_SHOW_FILE_NAME_DESC">
+	       <option value="">JGLOBAL_USE_GLOBAL</option>
+	       <option value="1">JSHOW</option>
+	       <option value="0">JHIDE</option>
+	</field>
+
+	<field name="show_file_size"
+	       type="list"
+	       class="chzn-color"
+	       label="COM_OKEYDOC_FIELD_SHOW_FILE_SIZE_LABEL"
+	       description="COM_OKEYDOC_FIELD_SHOW_FILE_SIZE_DESC">
+	       <option value="">JGLOBAL_USE_GLOBAL</option>
+	       <option value="1">JSHOW</option>
+	       <option value="0">JHIDE</option>
+	</field>
+
+	<field name="show_file_type"
+	       type="list"
+	       class="chzn-color"
+	       label="COM_OKEYDOC_FIELD_SHOW_FILE_TYPE_LABEL"
+	       description="COM_OKEYDOC_FIELD_SHOW_FILE_TYPE_DESC">
+	       <option value="">JGLOBAL_USE_GLOBAL</option>
+	       <option value="1">JSHOW</option>
+	       <option value="0">JHIDE</option>
+	</field>
+
+	<field name="show_file_author"
+	       type="list"
+	       class="chzn-color"
+	       label="COM_OKEYDOC_FIELD_SHOW_FILE_AUTHOR_LABEL"
+	       description="COM_OKEYDOC_FIELD_SHOW_FILE_AUTHOR_DESC">
+	       <option value="">JGLOBAL_USE_GLOBAL</option>
+	       <option value="1">JSHOW</option>
+	       <option value="0">JHIDE</option>
+	</field>
+
+	<field name="show_extension_icon"
+	       type="list"
+	       class="chzn-color"
+	       label="COM_OKEYDOC_FIELD_SHOW_EXTENSION_ICON_LABEL"
+	       description="COM_OKEYDOC_FIELD_SHOW_EXTENSION_ICON_DESC">
+	       <option value="">JGLOBAL_USE_GLOBAL</option>
+	       <option value="1">JSHOW</option>
+	       <option value="0">JHIDE</option>
+	</field>
+
+	<field name="show_downloads"
+	       type="list"
+	       class="chzn-color"
+	       label="COM_OKEYDOC_FIELD_SHOW_DOWNLOADS_LABEL"
+	       description="COM_OKEYDOC_FIELD_SHOW_DOWNLOADS_DESC">
+	       <option value="">JGLOBAL_USE_GLOBAL</option>
+	       <option value="1">JSHOW</option>
+	       <option value="0">JHIDE</option>
+	</field>
+
 	<field name="show_create_date"
 	       type="list"
 	       class="chzn-color"
@@ -305,6 +365,16 @@
 	       class="chzn-color"
 	       label="JGLOBAL_SHOW_READMORE_LABEL"
 	       description="COM_OKEYDOC_SHOW_READMORE_DESC">
+	       <option value="">JGLOBAL_USE_GLOBAL</option>
+	       <option value="1">JSHOW</option>
+	       <option value="0">JHIDE</option>
+	</field>
+
+	<field name="show_download"
+	       type="list"
+	       class="chzn-color"
+	       label="COM_OKEYDOC_FIELD_SHOW_DOWNLOAD_LABEL"
+	       description="COM_OKEYDOC_FIELD_SHOW_DOWNLOAD_DESC">
 	       <option value="">JGLOBAL_USE_GLOBAL</option>
 	       <option value="1">JSHOW</option>
 	       <option value="0">JHIDE</option>

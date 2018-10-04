@@ -32,19 +32,37 @@ $params = $this->item->params;
 		echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
   <?php endif; ?>
 
-  <?php if($params->get('show_readmore') && !empty($this->item->full_text)) :
-	  if($params->get('access-view')) :
-	    $link = JRoute::_(OkeydocHelperRoute::getDocumentRoute($this->item->slug, $this->item->catid, $this->item->language));
-	  else : //Redirect the user to the login page.
+  <?php if(($params->get('show_readmore') && !empty($this->item->full_text)) || $params->get('show_download')) :
+	  if(!$params->get('access-view')) { //Redirect the user to the login page.
 	    $menu = JFactory::getApplication()->getMenu();
 	    $active = $menu->getActive();
 	    $itemId = $active->id;
-	    $link = new JUri(JRoute::_('index.php?option=com_users&view=login&Itemid='.$itemId, false));
-	    $link->setVar('return', base64_encode(JRoute::_(OkeydocHelperRoute::getDocumentRoute($this->item->slug, $this->item->catid, $this->item->language), false)));
-	  endif; ?>
+	    $comUserLink = new JUri(JRoute::_('index.php?option=com_users&view=login&Itemid='.$itemId, false));
+	    $comUserLink->setVar('return', base64_encode(JRoute::_(OkeydocHelperRoute::getDocumentRoute($this->item->slug, $this->item->catid, $this->item->language), false)));
+	  }
 
-	<?php echo JLayoutHelper::render('document.readmore', array('item' => $this->item, 'params' => $params, 'link' => $link)); ?>
+          //Computes the Readmore and Download links.
+	  if($params->get('show_readmore') && !empty($this->item->full_text)) {     
+	    if($params->get('access-view')) {
+	      $link = JRoute::_(OkeydocHelperRoute::getDocumentRoute($this->item->slug, $this->item->catid, $this->item->language));
+	    }
+	    else {
+	      $link = $comUserLink;
+	    }
 
-  <?php endif; ?>
+	    echo JLayoutHelper::render('document.readmore', array('item' => $this->item, 'params' => $params, 'link' => $link)); 
+	  }
+
+	  if($params->get('show_download')) {     
+	    if($params->get('access-view')) {
+	      $link = JUri::base().'media/com_okeydoc/download.php?id='.$this->item->id;
+	    }
+	    else {
+	      $link = $comUserLink;
+	    }
+
+	    echo JLayoutHelper::render('document.download', array('item' => $this->item, 'params' => $params, 'link' => $link)); 
+	  }
+   endif; ?>
 </div>
 
