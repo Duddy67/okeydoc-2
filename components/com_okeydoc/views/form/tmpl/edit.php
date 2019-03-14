@@ -17,6 +17,8 @@ JHtml::_('formbehavior.chosen', 'select');
 // Create shortcut to parameters.
 $params = $this->state->get('params');
 $uri = JUri::getInstance();
+// Pre builds the download link. 
+$downloadLink = JURI::base().'index.php?option=com_okeydoc&view=download&tmpl=component';
 ?>
 
 <script type="text/javascript">
@@ -77,13 +79,13 @@ Joomla.submitbutton = function(task)
 		    echo $this->form->getControlGroup('alias');
 		?>
 
-	      <?php if($this->form->getValue('id') != 0) : //Existing item. ?>
+	      <?php if($this->form->getValue('id') != 0) : // Existing item. ?>
 		  <div class="control-group">
 		    <div class="control-label">
 		      <?php echo JText::_('COM_OKEYDOC_FIELD_DOWNLOAD_LABEL'); ?>
 		    </div>
 		    <div class="controls">
-		      <a href="<?php echo $uri->root().'media/com_okeydoc/download.php?id='.$this->item->id; ?>" class="btn btn-success" target="_blank">
+		      <a href="<?php echo $downloadLink.'&id='.$this->item->id.'&link=component'; ?>" class="btn btn-success" target="_blank">
 			<span class="icon-download"></span>&#160;<?php echo JText::_('COM_OKEYDOC_BUTTON_DOWNLOAD'); ?>
 		      </a>
 		    </div>

@@ -55,7 +55,7 @@ $params = $this->item->params;
 
 	  if($params->get('show_download')) {     
 	    if($params->get('access-view')) {
-	      $link = JUri::base().'media/com_okeydoc/download.php?id='.$this->item->id;
+	      $link = JURI::base().'index.php?option=com_okeydoc&view=download&tmpl=component&id='.$this->item->id;
 	    }
 	    else {
 	      $link = $comUserLink;

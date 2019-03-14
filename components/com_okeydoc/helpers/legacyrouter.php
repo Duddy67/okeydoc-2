@@ -311,12 +311,12 @@ class OkeydocRouterRulesLegacy implements JComponentRouterRulesInterface
     if(!$advanced) {
       $cat_id = (int)$segments[0];
 
-      $document_id = (int)$segments[$count - 1];
+      $doc_id = (int)$segments[$count - 1];
 
-      if($document_id > 0) {
+      if($doc_id > 0) {
 	$vars['view'] = 'document';
 	$vars['catid'] = $cat_id;
-	$vars['id'] = $document_id;
+	$vars['id'] = $doc_id;
       }
       else {
 	$vars['view'] = 'category';

@@ -41,7 +41,7 @@ class JFormFieldContentcategories extends JFormFieldList
       $query->select('id');
       $query->from('#__categories');
       $query->join('LEFT', '#__okeydoc_document_map ON id=item_id');
-      $query->where('extension="com_content" AND item_type="category" AND document_id='.$itemId.' AND access IN ('.$groups.')');
+      $query->where('extension="com_content" AND item_type="category" AND doc_id='.$itemId.' AND access IN ('.$groups.')');
       $db->setQuery($query);
       $selected = $db->loadColumn();
 

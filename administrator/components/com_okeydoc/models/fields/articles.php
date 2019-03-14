@@ -40,7 +40,7 @@ class JFormFieldArticles extends JFormFieldList
       $query->select('id');
       $query->from('#__content');
       $query->join('LEFT', '#__okeydoc_document_map ON id=item_id');
-      $query->where('item_type="article" AND document_id='.$itemId.' AND access IN ('.$groups.')');
+      $query->where('item_type="article" AND doc_id='.$itemId.' AND access IN ('.$groups.')');
       $db->setQuery($query);
       $selected = $db->loadColumn();
 

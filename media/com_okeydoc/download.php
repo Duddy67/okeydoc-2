@@ -35,15 +35,25 @@ if($jversion->getShortVersion() >= '3.8.0') {
 }
 //We need to use Joomla's database class 
 require_once (JPATH_BASE.$factoryFilePath);
-//Create the application
-$mainframe = JFactory::getApplication('site');
 
-//Get the id number passed through the url.
+// Creates the application
+$mainframe = JFactory::getApplication('administrator');
+
+// Gets the data passed through the url query.
 $jinput = JFactory::getApplication()->input;
+// The document id.
 $id = $jinput->get('id', 0, 'uint');
+// The version number of the file archive to download.
+$version = $jinput->get('version', 0, 'uint');
+// The origin of the link which calls this script. 
+$link = $jinput->get('link', 'external', 'string');
+
+// Gets the user's access view.
+$user = JFactory::getUser();
+
 
 if($id) {
-  //Retrieve some data from the document. 
+  // Retrieves some data from the document. 
   $db = JFactory::getDbo();
   $query = $db->getQuery(true);
   $query->select('published,publish_up,publish_down,access,alias,file_path,file_name,file_type,file_size,file_location')
@@ -61,9 +71,11 @@ if($id) {
   //Check the publication date (start and stop) of the document.
 
   //Get current date and time (equal to NOW() in SQL).
-  jimport('joomla.utilities.date');
+  /*jimport('joomla.utilities.date');
   $date = new JDate();
-  $now = $date->toSQL();
+  $now = $date->toSQL();*/
+  // Gets the current date and time (UTC).
+  $now = JFactory::getDate()->toSql();
 
   //A date to stop publishing is set.
   if($document->publish_down != '0000-00-00 00:00:00') {
@@ -84,9 +96,6 @@ if($id) {
   }
 
   //Check the permissions of the user for this document.
-
-  //Get the user's access view.
-  $user = JFactory::getUser();
 
   $accessView = false;
   if(in_array($document->access, $user->getAuthorisedViewLevels())) {

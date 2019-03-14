@@ -30,18 +30,21 @@
      $('#jform_file_url').prop('required', false);
      $('#jform_uploaded_file').parent('div').parent('div').show();
      $('#jform_uploaded_file').prop('required', true);
+     $('#jform_archive_file').parent('div').parent('div').show();
    }
    else { //url
      $('#jform_uploaded_file').parent('div').parent('div').hide();
      $('#jform_uploaded_file').prop('required', false);
      $('#jform_file_url').parent('div').parent('div').show();
      $('#jform_file_url').prop('required', true);
+     $('#jform_archive_file').parent('div').parent('div').hide();
    }
   };
 
   $.fn.replaceShow = function() {
     $('#jform_replace_file').val('1');
     $('#jform_file_location').parent('div').parent('div').show();
+    $('#jform_archive_file').parent('div').parent('div').show();
     $.fn.switchMethod();
     $('#replace-title').hide();
     $('#cancel-title').show();
@@ -57,6 +60,7 @@
 
   $.fn.hideLinkMethod = function() {
     $('#jform_file_location').parent('div').parent('div').hide();
+    $('#jform_archive_file').parent('div').parent('div').hide();
     $('#jform_file_url').parent('div').parent('div').hide();
     $('#jform_file_url').prop('required', false);
     $('#jform_uploaded_file').parent('div').parent('div').hide();

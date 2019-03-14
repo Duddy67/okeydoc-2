@@ -4,11 +4,19 @@
   <fieldset name="details" addfieldpath="/administrator/components/com_categories/models/fields">
 
 	<field name="file_location" type="list" 
-		label="COM_OKEYDOC_FILE_LOCATION_LABEL"
-		description="COM_OKEYDOC_FILE_LOCATION_DESC"
-		class="inputbox" default="server">
-		<option value="server">COM_OKEYDOC_FILE_LOCATION_SERVER</option>
-		<option value="url">COM_OKEYDOC_FILE_LOCATION_URL</option>
+	       label="COM_OKEYDOC_FILE_LOCATION_LABEL"
+	       description="COM_OKEYDOC_FILE_LOCATION_DESC"
+	       class="inputbox" default="server">
+	       <option value="server">COM_OKEYDOC_FILE_LOCATION_SERVER</option>
+	       <option value="url">COM_OKEYDOC_FILE_LOCATION_URL</option>
+	</field>
+
+	<field name="archive_file" type="list" 
+	       label="COM_OKEYDOC_ARCHIVE_FILE_LABEL"
+	       description="COM_OKEYDOC_ARCHIVE_FILE_DESC"
+	       class="inputbox" default="0">
+	       <option value="0">JNO</option>
+	       <option value="1">JYES</option>
 	</field>
 
 	<field name="uploaded_file" type="file"

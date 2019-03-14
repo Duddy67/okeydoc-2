@@ -20,6 +20,8 @@ use Joomla\Registry\Registry;
  */
 class OkeydocTableDocument extends JTable
 {
+  public $jform = null;
+
   /**
    * Constructor
    *
@@ -28,8 +30,10 @@ class OkeydocTableDocument extends JTable
   function __construct(&$db) 
   {
     parent::__construct('#__okeydoc_document', 'id', $db);
-    //Needed to use the Joomla tagging system with the document items.
+    // Needed to use the Joomla tagging system with the document items.
     JTableObserverTags::createObserver($this, array('typeAlias' => 'com_okeydoc.document'));
+    // Gets the edit form.
+    $this->jform = JFactory::getApplication()->input->post->get('jform', array(), 'array');
   }
 
 
@@ -116,11 +120,11 @@ class OkeydocTableDocument extends JTable
       }
     }
 
-    //Set the alias of the document.
+    // Set the alias of the document.
     
-    //Create a sanitized alias, (see stringURLSafe function for details).
+    // Create a sanitized alias, (see stringURLSafe function for details).
     $this->alias = JFilterOutput::stringURLSafe($this->alias);
-    //In case no alias has been defined, create a sanitized alias from the title field.
+    // In case no alias has been defined, create a sanitized alias from the title field.
     if(empty($this->alias)) {
       $this->alias = JFilterOutput::stringURLSafe($this->title);
     }
@@ -133,10 +137,28 @@ class OkeydocTableDocument extends JTable
       return false;
     }
 
-    //Now that the item data is ok let's move to the file data.
-    //Note: The file validity has been already checked in the model. 
+    if($this->jform['archive_file'] == 1) {
+      $archive = array();
+      //
+      $archive['file_name'] = $this->file_name;
+      $archive['file_type'] = $this->file_type;
+      $archive['file_size'] = $this->file_size;
+      $archive['file_path'] = $this->file_path;
+      $archive['file_icon'] = $this->file_icon;
+      $archive['downloads'] = $this->downloads;
+    }
+
+    // Now that the item data is ok let's move to the file data.
+    // Note: The file validity has been already checked in the model. 
     if(!$this->setFileData()) {
       return false;
+    }
+
+    if($this->jform['archive_file'] == 1) {
+      $model = JModelLegacy::getInstance('document', 'OkeydocModel');
+      $model->archiveFile($this->id, $archive);
+      // Reset the downloads for the new file version.
+      $this->downloads = 0;
     }
 
     return parent::store($updateNulls);
@@ -151,11 +173,11 @@ class OkeydocTableDocument extends JTable
    */
   protected function setFileData()
   {
-    //Gets the edit form.
+    // Gets the edit form.
     $jform = JFactory::getApplication()->input->post->get('jform', array(), 'array');
 
-    //In case of replacement the current file has to be deleted from the server.
-    if($jform['replace_file'] == 1 && $jform['current_file_location'] == 'server') {
+    // In case of replacement without file archiving, the current file has to be deleted from the server.
+    if($jform['replace_file'] == 1 && $jform['current_file_location'] == 'server' && !$jform['archive_file']) {
       //Warning: Don't ever use the JFile delete function cause if a problem occurs with
       //the file, the returned value is undefined (nor boolean or whatever). 
       //Stick to the unlink PHP function which is safer.

@@ -86,6 +86,7 @@
 		    <folder>models</folder>
 		    <folder>sql</folder>
 		    <folder>tables</folder>
+		    <folder>traits</folder>
 		    <folder>views</folder>
 	    </files>
     </administration>

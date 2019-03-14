@@ -18,6 +18,7 @@ class OkeydocViewDocument extends JViewLegacy
   protected $item;
   protected $form;
   protected $state;
+  protected $archives;
 
   //Display the view.
   public function display($tpl = null)
@@ -25,6 +26,7 @@ class OkeydocViewDocument extends JViewLegacy
     $this->item = $this->get('Item');
     $this->form = $this->get('Form');
     $this->state = $this->get('State');
+    $this->archives = $this->getModel()->getArchives();
 
     //Check for errors.
     if(count($errors = $this->get('Errors'))) {

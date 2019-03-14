@@ -14,7 +14,7 @@ CREATE TABLE `#__okeydoc_document` (
   `file_path` TINYTEXT NOT NULL,
   `file_location` VARCHAR(10) NOT NULL,
   `file_icon` VARCHAR(20) NOT NULL,
-  `author` VARCHAR(255) NOT NULL,
+  `author` VARCHAR(80) NOT NULL,
   `downloads` INT UNSIGNED NOT NULL DEFAULT 0 ,
   `published` TINYINT NOT NULL DEFAULT 0 ,
   `catid` INT UNSIGNED NOT NULL ,
@@ -49,8 +49,25 @@ ENGINE = MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `#__okeydoc_document_map`;
 CREATE TABLE `#__okeydoc_document_map` (
-  `document_id` INT UNSIGNED NOT NULL,
+  `doc_id` INT UNSIGNED NOT NULL,
   `item_id` INT UNSIGNED NOT NULL,
   `item_type` CHAR(8) NOT NULL )
+ENGINE = MyISAM DEFAULT CHARSET=utf8;
+
+-- -----------------------------------------------------
+-- Table `#__okeydoc_archive`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `#__okeydoc_archive`;
+CREATE TABLE `#__okeydoc_archive` (
+  `doc_id` INT UNSIGNED NOT NULL DEFAULT 0 ,
+  `file_name` VARCHAR(255) NOT NULL ,
+  `file_type` VARCHAR(30) NOT NULL ,
+  `file_size` VARCHAR(20) NOT NULL ,
+  `file_path` TINYTEXT NOT NULL ,
+  `file_icon` VARCHAR(20) NOT NULL ,
+  `downloads` INT UNSIGNED NOT NULL ,
+  `version` TINYINT UNSIGNED NOT NULL ,
+  `archived` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
+  INDEX `idx_doc_id` (`doc_id` ASC) )
 ENGINE = MyISAM DEFAULT CHARSET=utf8;
 

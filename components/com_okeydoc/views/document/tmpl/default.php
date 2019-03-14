@@ -47,7 +47,7 @@ $item = $this->item;
 		echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
   <?php endif; ?>
 
-  <?php $link = JUri::base().'media/com_okeydoc/download.php?id='.$this->item->id;
+  <?php $link = JURI::base().'index.php?option=com_okeydoc&view=download&tmpl=component&id='.$this->item->id;
 	echo JLayoutHelper::render('document.download', array('item' => $this->item, 'params' => $params,
 							      'link' => $link, 'view' => 'document')); ?>
 </div>

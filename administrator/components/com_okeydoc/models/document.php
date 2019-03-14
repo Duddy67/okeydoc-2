@@ -109,7 +109,7 @@ class OkeydocModelDocument extends JModelAdmin
   public function validate($form, $data, $group = null)
   {
     if($data['id'] == 0 || $data['replace_file'] == 1) {
-      //Checks the file is valid according to its location.
+      // Checks the file is valid according to its location.
       if($data['file_location'] == 'url' && !OkeydocHelper::checkFileFromUrl($data['file_url'])) {
 	return false;
       }
@@ -137,6 +137,53 @@ class OkeydocModelDocument extends JModelAdmin
 
     //Hand over to the parent function.
     return parent::saveorder($pks, $order);
+  }
+
+
+  public function getArchives($pk = null)
+  {
+    $pk = (!empty($pk)) ? $pk : (int)$this->getState($this->getName().'.id');
+
+    $db = JFactory::getDbo();
+    $query = $db->getQuery(true);
+
+    $query->select('file_size, file_icon, downloads, version, archived')
+          ->from('#__okeydoc_archive')
+          ->where('doc_id='.(int)$pk)
+          ->order('version ASC');
+    $db->setQuery($query);
+
+    return $db->loadAssocList();
+  }
+
+
+  public function archiveFile($pk, $archive)
+  {
+    // Gets the current date and time (UTC).
+    $now = JFactory::getDate()->toSql();
+
+    $db = JFactory::getDbo();
+    $query = $db->getQuery(true);
+
+    // Computes the file version number against the number of archives already present in
+    // the table.
+    $query->select('COUNT(*)')
+          ->from('#__okeydoc_archive');
+    $db->setQuery($query);
+    $version = (int)$db->loadResult() + 1;
+
+    // Adds the new file archive.
+    $columns = array('doc_id', 'archived', 'file_name', 'file_type', 'file_size', 'file_path', 'file_icon', 'version', 'downloads');
+    $values = $pk.','.$db->Quote($now).','.$db->Quote($archive['file_name']).','.$db->Quote($archive['file_type']).','.
+              $db->Quote($archive['file_size']).','.$db->Quote($archive['file_path']).','.$db->Quote($archive['file_icon']).
+              ','.$version.','.$archive['downloads'];
+
+    $query->clear();
+    $query->insert('#__okeydoc_archive')
+	  ->columns($columns)
+	  ->values($values);
+    $db->setQuery($query);
+    $db->execute();
   }
 }
 

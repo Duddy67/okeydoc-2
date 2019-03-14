@@ -13,7 +13,7 @@ $view = $displayData['view'];
 
 $target = 'target="blank"';
 if(!$params->get('access-view' && $view == 'category')) {
-  $target = '';
+  //$target = '';
 }
 ?>
 

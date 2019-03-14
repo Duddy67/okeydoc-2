@@ -34,9 +34,9 @@ class OkeydocRouter extends JComponentRouterView
     $category = new JComponentRouterViewconfiguration('category');
     $category->setKey('id')->setParent($categories, 'catid')->setNestable()->addLayout('blog');
     $this->registerView($category);
-    $article = new JComponentRouterViewconfiguration('document');
-    $article->setKey('id')->setParent($category, 'catid');
-    $this->registerView($article);
+    $document = new JComponentRouterViewconfiguration('document');
+    $document->setKey('id')->setParent($category, 'catid');
+    $this->registerView($document);
     $form = new JComponentRouterViewconfiguration('form');
     $form->setKey('n_id');
     $this->registerView($form);
