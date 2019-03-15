@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.3" type="plugin" group="editors-xtd" method="upgrade">
+  <name>plg_editors-xtd_okeydoc</name>
+  <author>Lucas Sanner</author>
+  <creationDate>2019-03-26</creationDate>
+  <license>GPL 3.0</license> 
+  <authorEmail>lucas.sanner@codalia.net</authorEmail>
+  <authorUrl>https://github.com/Duddy67/okey-doc2</authorUrl>
+  <version>1.5</version>
+  <description>PLG_EDITORS-XTD_OKEYDOC_XML_DESCRIPTION</description>
+      <files>
+	<filename plugin="okeydoc">okeydoc.php</filename>
+	<filename>index.html</filename>
+	<folder>language</folder>
+      </files>
+
+
+</extension>

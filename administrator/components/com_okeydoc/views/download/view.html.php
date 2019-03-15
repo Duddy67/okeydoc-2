@@ -18,7 +18,12 @@ class OkeydocViewDownload extends JViewLegacy
 
   public function display($tpl = null)
   {
+    //$this->loadTemplate('default:tmpl');
+    //$this->setLayout('component');
+    //$this->render();
+    //$tpl = 'component';
     $this->downloadFile(true);
+    //parent::display($tpl);
   }
 }
 

@@ -19,6 +19,10 @@
 	       <option value="1">JYES</option>
 	</field>
 
+	<field name="redirect_id" type="modal_document"
+		label="COM_OKEYDOC_FIELD_METHOD_SERVER_LABEL"
+		description="COM_OKEYDOC_FIELD_METHOD_SERVER_DESC" />
+
 	<field name="uploaded_file" type="file"
 		label="COM_OKEYDOC_FIELD_METHOD_SERVER_LABEL"
 		description="COM_OKEYDOC_FIELD_METHOD_SERVER_DESC"

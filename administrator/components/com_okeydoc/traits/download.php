@@ -23,7 +23,7 @@ trait DownloadTrait
     // The version number of the file archive to download.
     $version = $jinput->get('version', 0, 'uint');
     // The origin of the link which calls this script. 
-    $link = $jinput->get('link', 'external', 'string');
+    $link = $jinput->get('link', 'component', 'string');
 
     // Gets the user's access view.
     $user = JFactory::getUser();
@@ -37,14 +37,16 @@ trait DownloadTrait
       // Sets the query according to the type of file to download.
 
       if($version) { // A previous version of the current file.
-	$query->select('a.file_path,a.file_name,a.file_type,a.file_size,a.archived,d.title,d.access')
+	$query->select('a.file_path,a.file_name,a.file_type,a.file_size,a.archived,'.
+	               'd.title,d.access,d.published,d.publish_up,d.publish_down')
 	      ->from('#__okeydoc_archive AS a')
 	      ->join('LEFT', '#__okeydoc_document AS d ON d.id=a.doc_id')
 	      ->where('a.doc_id='.$id)
 	      ->where('a.version='.$version);
       }
       else { // The current file.
-	$query->select('published,publish_up,publish_down,access,title,file_path,file_name,file_type,file_size,file_location')
+	$query->select('published,publish_up,publish_down,access,title,file_path,'.
+	               'file_name,file_type,file_size,file_location')
 	      ->from('#__okeydoc_document')
 	      ->where('id='.$id);
       }

@@ -48,7 +48,7 @@ Joomla.submitbutton = function(task)
 		      <?php echo JText::_('COM_OKEYDOC_FIELD_DOWNLOAD_LABEL'); ?>
 		    </div>
 		    <div class="controls">
-		      <a href="<?php echo $downloadLink.'&id='.$this->item->id.'&link=component'; ?>" class="btn btn-success" target="_blank">
+		      <a href="<?php echo $downloadLink.'&id='.$this->item->id; ?>" class="btn btn-success" target="_blank">
 			<span class="icon-download"></span>&#160;<?php echo JText::_('COM_OKEYDOC_BUTTON_DOWNLOAD'); ?>
 		      </a>
 		    </div>
@@ -67,6 +67,7 @@ Joomla.submitbutton = function(task)
 		    echo $this->form->getControlGroup('archive_file');
 		    echo $this->form->getControlGroup('file_url');
 		    echo $this->form->getControlGroup('author');
+		    echo $this->form->getControlGroup('redirect_id');
 		    echo $this->form->getControlGroup('documenttext');
 		?>
 	    </div>

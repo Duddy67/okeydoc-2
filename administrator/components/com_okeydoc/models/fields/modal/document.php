@@ -42,7 +42,7 @@ class JFormFieldModal_Document extends JFormField
     $script = array();
 
     // Select button script
-    $script[] = '	function jSelectDocument_'.$this->id.'(id, title, catid, object) {';
+    $script[] = '	function selectDocument_'.$this->id.'(id, title, catid, object) {';
     $script[] = '		document.getElementById("'.$this->id.'_id").value = id;';
     $script[] = '		document.getElementById("'.$this->id.'_name").value = title;';
 
@@ -79,7 +79,7 @@ class JFormFieldModal_Document extends JFormField
 
     // Setup variables for display.
     $html = array();
-    $link = 'index.php?option=com_okeydoc&amp;view=documents&amp;layout=modal&amp;tmpl=component&amp;function=jSelectDocument_'.$this->id; 
+    $link = 'index.php?option=com_okeydoc&amp;view=documents&amp;layout=modal&amp;tmpl=component&amp;function=selectDocument_'.$this->id; 
 
     if(isset($this->element['language'])) {
       $link .= '&amp;forcedLanguage='.$this->element['language'];

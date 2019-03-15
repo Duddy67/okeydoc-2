@@ -195,6 +195,14 @@ class OkeydocModelDocuments extends JModelList
 		   ' AND '.$db->quoteName('tagmap.type_alias').' = '.$db->quote('com_okeydoc.document'));
     }
 
+    // Detects whether the query is used for a modal view, (a function name is always passed through the link).
+    $isModal = JFactory::getApplication()->input->get->get('function', '', 'string');
+
+    if(!empty($isModal)) {
+      // Shows only the published documents.
+      $query->where('d.published=1');
+    }
+
     //Add the list to the sort.
     $orderCol = $this->state->get('list.ordering', 'd.title');
     $orderDirn = $this->state->get('list.direction'); //asc or desc

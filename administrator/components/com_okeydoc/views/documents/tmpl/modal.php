@@ -20,7 +20,7 @@ if($app->isSite()) {
 }
 
 $jinput = JFactory::getApplication()->input;
-$function = $jinput->get('function', 'jSelectDocument');
+$function = $jinput->get('function', 'selectDocument');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
@@ -49,16 +49,6 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
     </div>
     <hr class="hr-condensed" />
     <div class="filters pull-left">
-      <select name="filter_access" class="input-medium" onchange="this.form.submit()">
-	<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
-	<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
-      </select>
-
-      <select name="filter_published" class="input-medium" onchange="this.form.submit()">
-	<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
-	<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
-      </select>
-
       <?php if ($this->state->get('filter.forcedLanguage')) : ?>
       <select name="filter_category_id" class="input-medium" onchange="this.form.submit()">
 	<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
@@ -131,8 +121,13 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
       <tr class="row<?php echo $i % 2; ?>">
 	      <td class="has-context">
 		<div class="pull-left">
+          <?php if($function == 'insertDocumentLink') : ?>
+		  <a href="javascript:void(0)" onclick="if (window.parent)
+		  window.parent.<?php echo $this->escape($function);?>('<?php echo $this->escape(addslashes($item->title)); ?>','<?php echo JUri::root().'index.php?option=com_okeydoc&tmpl=component&view=download&link=external&id='.$item->id; ?>');"><?php echo $this->escape($item->title); ?></a>
+          <?php else : ?>
 		  <a href="javascript:void(0)" onclick="if (window.parent)
 		  window.parent.<?php echo $this->escape($function);?>('<?php echo $item->id; ?>','<?php echo $this->escape(addslashes($item->title)); ?>','<?php echo $item->catid; ?>');"><?php echo $this->escape($item->title); ?></a>
+          <?php endif; ?>
 		  <span class="small break-word">
 		    <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
 		  </span>

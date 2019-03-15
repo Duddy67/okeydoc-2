@@ -16,6 +16,14 @@
 		description="COM_OKEYDOC_FIELD_METHOD_SERVER_DESC"
 		required="false" />
 
+	<field name="archive_file" type="list" 
+	       label="COM_OKEYDOC_ARCHIVE_FILE_LABEL"
+	       description="COM_OKEYDOC_ARCHIVE_FILE_DESC"
+	       class="inputbox" default="0">
+	       <option value="0">JNO</option>
+	       <option value="1">JYES</option>
+	</field>
+
 	<field name="file_url" type="text"
 		label="COM_OKEYDOC_FIELD_METHOD_URL_LABEL"
 		description="COM_OKEYDOC_FIELD_METHOD_URL_DESC"
@@ -74,6 +82,7 @@
 	<field name="articleids" type="articles" multiple="multiple"
 		label="COM_OKEYDOC_FIELD_ARTICLES_LABEL"
 		description="COM_OKEYDOC_FIELD_ARTICLES_DESC"
+		addfieldpath="/administrator/components/com_okeydoc/models/fields"
 		class="inputbox" >
 	</field>
 
