@@ -38,10 +38,11 @@ class JFormFieldContentcategories extends JFormFieldList
       //Get the content category ids previously selected.
       $db = JFactory::getDbo();
       $query = $db->getQuery(true);
-      $query->select('id');
-      $query->from('#__categories');
-      $query->join('LEFT', '#__okeydoc_document_map ON id=item_id');
-      $query->where('extension="com_content" AND item_type="category" AND doc_id='.$itemId.' AND access IN ('.$groups.')');
+      $query->select('id')
+	    ->from('#__categories')
+	    ->join('LEFT', '#__okeydoc_document_linking ON id=item_id')
+	    ->where('extension="com_content" AND item_type="category" AND linking_type="internal" AND doc_id='.$itemId)
+	    ->where('access IN ('.$groups.')');
       $db->setQuery($query);
       $selected = $db->loadColumn();
 

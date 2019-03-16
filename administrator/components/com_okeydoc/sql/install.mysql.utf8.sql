@@ -45,13 +45,14 @@ ENGINE = MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
 
 -- -----------------------------------------------------
--- Table `#__okeydoc_document_map`
+-- Table `#__okeydoc_document_linking`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `#__okeydoc_document_map`;
-CREATE TABLE `#__okeydoc_document_map` (
+DROP TABLE IF EXISTS `#__okeydoc_document_linking`;
+CREATE TABLE `#__okeydoc_document_linking` (
   `doc_id` INT UNSIGNED NOT NULL,
   `item_id` INT UNSIGNED NOT NULL,
-  `item_type` CHAR(8) NOT NULL )
+  `item_type` CHAR(8) NOT NULL ,
+  `linking_type` CHAR(8) NOT NULL )
 ENGINE = MyISAM DEFAULT CHARSET=utf8;
 
 -- -----------------------------------------------------

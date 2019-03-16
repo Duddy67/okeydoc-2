@@ -37,10 +37,11 @@ class JFormFieldArticles extends JFormFieldList
       //Get the article ids previously selected.
       $db = JFactory::getDbo();
       $query = $db->getQuery(true);
-      $query->select('id');
-      $query->from('#__content');
-      $query->join('LEFT', '#__okeydoc_document_map ON id=item_id');
-      $query->where('item_type="article" AND doc_id='.$itemId.' AND access IN ('.$groups.')');
+      $query->select('id')
+	    ->from('#__content')
+	    ->join('LEFT', '#__okeydoc_document_linking ON id=item_id')
+	    ->where('item_type="article" AND doc_id='.$itemId.' AND linking_type="internal"')
+	    ->where('access IN ('.$groups.')');
       $db->setQuery($query);
       $selected = $db->loadColumn();
 
