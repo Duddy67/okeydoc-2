@@ -78,11 +78,32 @@ Joomla.submitbutton = function(task)
       </div>
       <?php echo JHtml::_('bootstrap.endTab'); ?>
 
-      <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'attachment', JText::_('COM_OKEYDOC_TAB_LINK_DOCUMENT', true)); ?>
+      <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'attachment', JText::_('COM_OKEYDOC_TAB_DOCUMENT_LINKINGS', true)); ?>
       <div class="row-fluid form-horizontal-desktop">
 	<div class="span6">
-	  <?php echo $this->form->getControlGroup('contcatids'); ?>
 	  <?php echo $this->form->getControlGroup('articleids'); ?>
+
+	  <?php if(!empty($this->extDocLinkings['article'])) : ?>
+	    <div class="document-linkings">
+              <table class="table">
+	       <tr>
+		 <th><?php echo JText::_('JGLOBAL_TITLE'); ?></th>
+		 <th><?php echo JText::_('JGRID_HEADING_ID'); ?></th>
+	       </tr>
+	       <?php foreach($this->extDocLinkings['article'] as $extDocLinking) : ?>
+		 <tr>
+		  <td><?php echo $extDocLinking['title']; ?></td>
+		  <td><?php echo $extDocLinking['item_id']; ?></td>
+                 </tr>
+	       <?php endforeach; ?>
+	      </table>
+            </div>
+	  <?php endif; ?>
+
+	  <?php echo $this->form->getControlGroup('contcatids'); ?>
+
+	  <?php if(!empty($this->extDocLinkings['category'])) : ?>
+	  <?php endif; ?>
 	</div>
       </div>
       <?php echo JHtml::_('bootstrap.endTab'); ?>

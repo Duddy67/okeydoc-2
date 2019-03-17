@@ -140,6 +140,35 @@ class OkeydocModelDocument extends JModelAdmin
   }
 
 
+  public function getExternalDocumentLinkings($pk = null)
+  {
+    $pk = (!empty($pk)) ? $pk : (int)$this->getState($this->getName().'.id');
+
+    $db = JFactory::getDbo();
+    $query = $db->getQuery(true);
+    $linkings = array('article' => array(), 'category' => array());
+
+    $query->select('item_id, item_type, title')
+          ->from('#__okeydoc_document_linking')
+          ->join('LEFT', '#__content ON id=item_id')
+          ->where('doc_id='.(int)$pk.' AND linking_type="external"')
+          ->order('item_type ASC');
+    $db->setQuery($query);
+    $results = $db->loadAssocList();
+
+    foreach($results as $result) {
+      if($result['item_type'] == 'article') {
+	$linkings['article'][] = $result;
+      }
+      else {
+	$linkings['category'][] = $result;
+      }
+    }
+
+    return $linkings;
+  }
+
+
   public function getArchives($pk = null)
   {
     $pk = (!empty($pk)) ? $pk : (int)$this->getState($this->getName().'.id');

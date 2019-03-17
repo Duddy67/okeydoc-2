@@ -72,16 +72,10 @@ class plgContentOkeydoc extends JPlugin
 
       // Set the content categories and/or articles linked to the document.
       
-      $db = JFactory::getDbo();
-      $query = $db->getQuery(true);
       // First deletes the possible previous categories and articles linked to this document.
-      $query->delete('#__okeydoc_document_linking')
-	    ->where('doc_id='.(int)$data->id.' AND linking_type="internal" AND item_type IN ("category", "article")');
-      $db->setQuery($query);
-      $db->execute();
+      $this->deleteDocumentLinkings($data->id, null, null, 'internal');
 
       // Initialize the SQL clause variables.
-      $columns = array('doc_id', 'item_id', 'item_type', 'linking_type');
       $values = array();
 
       if(count($this->jform['contcatids'])) {
@@ -91,12 +85,7 @@ class plgContentOkeydoc extends JPlugin
 	}
 
 	// Inserts the linked categories.
-	$query->clear();
-	$query->insert('#__okeydoc_document_linking')
-	      ->columns($columns)
-	      ->values($values);
-	$db->setQuery($query);
-	$db->execute();
+	$this->insertDocumentLinkings($values);
       }
 
       if(count($this->jform['articleids'])) {
@@ -109,43 +98,40 @@ class plgContentOkeydoc extends JPlugin
 	}
 
 	// Inserts the linked articles.
-	$query->clear();
-	$query->insert('#__okeydoc_document_linking')
-	      ->columns($columns)
-	      ->values($values);
-	$db->setQuery($query);
-	$db->execute();
+	$this->insertDocumentLinkings($values);
       }
     }
     elseif($context == 'com_content.article' || $context == 'com_content.form') {
       $text = $data->introtext.$data->fulltext;
       $docIds = $this->searchDocumentLinks($text);
+      $this->deleteDocumentLinkings(null, $data->id, 'article', 'external');
 
       if(!empty($docIds)) {
+	$values = array();
+
+	// Builds the VALUE SQL clause.
+	foreach($docIds as $docId) {
+	  $values[] = (int)$docId.','.(int)$data->id.',"article", "external"';
+	}
+
+        $this->insertDocumentLinkings($values);
       }
     }
     elseif($context == 'com_categories.category') {
       $docIds = $this->searchDocumentLinks($data->description);
+      $this->deleteDocumentLinkings(null, $data->id, 'category', 'external');
 
       if(!empty($docIds)) {
+	$values = array();
+
+	// Builds the VALUE SQL clause.
+	foreach($docIds as $docId) {
+	  $values[] = (int)$docId.','.(int)$data->id.',"category", "external"';
+	}
+
+        $this->insertDocumentLinkings($values);
       }
     }
-  }
-
-
-  public function searchDocumentLinks($text)
-  {
-    $docIds = array();
-    // Searches document links into the given text then extracts the document ids.
-    preg_match_all('#<a href="index\.php\?option=com_okeydoc&amp;tmpl=component&amp;view=download&amp;id=([0-9]*)#i', $text, $matches);
-    // Stores the document ids if any.
-    foreach($matches[1] as $docId) {
-      if(!in_array($docId, $docIds)) {
-	$docIds[] = $docId;
-      }
-    }
-
-    return $docIds;
   }
 
 
@@ -158,15 +144,13 @@ class plgContentOkeydoc extends JPlugin
   public function onContentAfterDelete($context, $data)
   {
     if($context == 'com_okeydoc.document') {
+      // 
+      $this->deleteDocumentLinkings($data->id);
+
+      //
       $db = JFactory::getDbo();
       $query = $db->getQuery(true);
-      // 
-      $query->delete('#__okeydoc_document_linking')
-	    ->where('doc_id='.(int)$data->id);
-      $db->setQuery($query);
-      $db->execute();
-      //
-      $query->clear();
+
       $query->delete('#__okeydoc_archive')
 	    ->where('doc_id='.(int)$data->id);
       $db->setQuery($query);
@@ -175,19 +159,11 @@ class plgContentOkeydoc extends JPlugin
     elseif($context == 'com_content.article') {
       $text = $data->introtext.$data->fulltext;
       $docIds = $this->searchDocumentLinks($text);
-
-      if(!empty($docIds)) {
-	$db = JFactory::getDbo();
-	$query = $db->getQuery(true);
-	// 
-	$query->delete('#__okeydoc_document_linking')
-	      ->where('item_id='.(int)$data->id.' AND item_type="article" AND linking_type="external"')
-	      ->where('doc_id IN('.implode(',', $docIds).')');
-	$db->setQuery($query);
-	$db->execute();
-      }
+      $this->deleteDocumentLinkings($docIds, $data->id, 'article', 'external');
     }
     elseif($context == 'com_categories.category') {
+      $docIds = $this->searchDocumentLinks($data->description);
+      $this->deleteDocumentLinkings($docIds, $data->id, 'category', 'external');
     }
   }
 
@@ -207,6 +183,74 @@ class plgContentOkeydoc extends JPlugin
   public function onContentChangeState($context, $pks, $value)
   {
     return true;
+  }
+
+
+  private function deleteDocumentLinkings($docIds = null, $itemId = null, $itemType = null, $linkingType = null)
+  {
+    // Prevents the complete deletion of the rows as well as the request to fail. 
+    if(($docIds === null && $itemId === null && $itemType === null && $linkingType === null) || (is_array($docIds) && empty($docIds))) {
+      return;
+    }
+
+    if($docIds !== null && !is_array($docIds)) {
+      $docId = (int)$docIds;
+      $docIds = array($docId);
+    }
+
+    $db = JFactory::getDbo();
+    $query = $db->getQuery(true);
+    // 
+    $query->delete('#__okeydoc_document_linking');
+
+    if($docIds !== null) {
+      $query->where('doc_id IN('.implode(',', $docIds).')');
+    }
+
+    if($itemId !== null) {
+      $query->where('item_id='.(int)$itemId);
+    }
+
+    if($itemType !== null) {
+      $query->where('item_type='.$db->Quote($itemType));
+    }
+
+    if($linkingType !== null) {
+      $query->where('linking_type='.$db->Quote($linkingType));
+    }
+
+    $db->setQuery($query);
+    $db->execute();
+  }
+
+
+  private function insertDocumentLinkings($values)
+  {
+    $db = JFactory::getDbo();
+    $query = $db->getQuery(true);
+    $columns = array('doc_id', 'item_id', 'item_type', 'linking_type');
+
+    $query->insert('#__okeydoc_document_linking')
+	  ->columns($columns)
+	  ->values($values);
+    $db->setQuery($query);
+    $db->execute();
+  }
+
+
+  public function searchDocumentLinks($text)
+  {
+    $docIds = array();
+    // Searches document links into the given text then extracts the document ids.
+    preg_match_all('#<a href="index\.php\?option=com_okeydoc&amp;tmpl=component&amp;view=download&amp;id=([0-9]*)#i', $text, $matches);
+    // Stores the document ids if any.
+    foreach($matches[1] as $docId) {
+      if(!in_array($docId, $docIds)) {
+	$docIds[] = $docId;
+      }
+    }
+
+    return $docIds;
   }
 }
 
