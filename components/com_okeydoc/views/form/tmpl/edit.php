@@ -69,7 +69,6 @@ Joomla.submitbutton = function(task)
 		<li class="active"><a href="#details" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_DETAILS') ?></a></li>
 		<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_PUBLISHING') ?></a></li>
 		<li><a href="#link-document" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_LINK_DOCUMENT') ?></a></li>
-		<li><a href="#versions" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_VERSIONS') ?></a></li>
 		<li><a href="#language" data-toggle="tab"><?php echo JText::_('JFIELD_LANGUAGE_LABEL') ?></a></li>
 		<li><a href="#metadata" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_METADATA') ?></a></li>
 	</ul>
@@ -104,7 +103,6 @@ Joomla.submitbutton = function(task)
 	      <?php
 		    echo $this->form->getControlGroup('file_location');
 		    echo $this->form->getControlGroup('uploaded_file');
-		    echo $this->form->getControlGroup('archive_file');
 		    echo $this->form->getControlGroup('file_url');
 		    echo $this->form->getControlGroup('author');
 		    echo $this->form->getControlGroup('documenttext');
@@ -128,34 +126,18 @@ Joomla.submitbutton = function(task)
 	      </div>
 
 	      <div class="tab-pane" id="link-document">
-		<?php echo $this->form->getControlGroup('contcatids'); ?>
 		<?php echo $this->form->getControlGroup('articleids'); ?>
-		<span class="link-document-space"></span>
-	      </div>
 
-	      <div class="tab-pane" id="versions">
-		<table class="table">
-		 <tr>
-		   <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_VERSION'); ?></th>
-		   <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_SIZE'); ?></th>
-		   <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_FILE_TYPE'); ?></th>
-		   <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_DOWNLOADS'); ?></th>
-		   <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_ARCHIVED'); ?></th>
-		   <th></th>
-		 </tr>
-		 <?php foreach($this->archives as $key => $archive) : ?>
-		   <tr>
-		    <td><?php echo $archive['version']; ?></td>
-		    <td><?php echo $archive['file_size']; ?></td>
-		    <td><?php echo $archive['file_icon']; ?></td>
-		    <td><?php echo $archive['downloads']; ?></td>
-		    <td><?php echo JHtml::_('date', $archive['archived'], JText::_('DATE_FORMAT_LC2')); ?></td>
-		    <td><a href="<?php echo $downloadLink.'&id='.$this->item->id.'&version='.$archive['version']; ?>" class="btn btn-info" target="_blank">
-		      <span class="icon-download"></span>&#160;<?php echo JText::_('COM_OKEYDOC_BUTTON_DOWNLOAD'); ?></a></td>
-		   </tr>
-		 <?php endforeach; ?>
-		</table>
-		<span class="versions-space"></span>
+		<?php if(!empty($this->extDocLinkings['article'])) { 
+			echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['article'], 'link_type' => 'article')); 
+		      } ?>
+
+		<?php echo $this->form->getControlGroup('contcatids'); ?>
+
+		<?php if(!empty($this->extDocLinkings['category'])) { 
+			echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['category'], 'link_type' => 'category')); 
+		      } ?>
+		<span class="link-document-space"></span>
 	      </div>
 
 	      <div class="tab-pane" id="metadata">

@@ -83,27 +83,15 @@ Joomla.submitbutton = function(task)
 	<div class="span6">
 	  <?php echo $this->form->getControlGroup('articleids'); ?>
 
-	  <?php if(!empty($this->extDocLinkings['article'])) : ?>
-	    <div class="document-linkings">
-              <table class="table">
-	       <tr>
-		 <th><?php echo JText::_('JGLOBAL_TITLE'); ?></th>
-		 <th><?php echo JText::_('JGRID_HEADING_ID'); ?></th>
-	       </tr>
-	       <?php foreach($this->extDocLinkings['article'] as $extDocLinking) : ?>
-		 <tr>
-		  <td><?php echo $extDocLinking['title']; ?></td>
-		  <td><?php echo $extDocLinking['item_id']; ?></td>
-                 </tr>
-	       <?php endforeach; ?>
-	      </table>
-            </div>
-	  <?php endif; ?>
+	  <?php if(!empty($this->extDocLinkings['article'])) { 
+		  echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['article'], 'link_type' => 'article')); 
+		} ?>
 
 	  <?php echo $this->form->getControlGroup('contcatids'); ?>
 
-	  <?php if(!empty($this->extDocLinkings['category'])) : ?>
-	  <?php endif; ?>
+	  <?php if(!empty($this->extDocLinkings['category'])) { 
+		  echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['category'], 'link_type' => 'category')); 
+		} ?>
 	</div>
       </div>
       <?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -111,28 +99,7 @@ Joomla.submitbutton = function(task)
       <?php if(!empty($this->archives)) : ?>
 	<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'versions', JText::_('COM_OKEYDOC_TAB_VERSIONS', true)); ?>
 	<div class="row-fluid form-horizontal-desktop">
-          <table class="table">
-	   <tr>
-             <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_VERSION'); ?></th>
-             <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_SIZE'); ?></th>
-             <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_FILE_TYPE'); ?></th>
-             <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_DOWNLOADS'); ?></th>
-             <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_ARCHIVED'); ?></th>
-             <th></th>
-           </tr>
-	   <?php foreach($this->archives as $key => $archive) : ?>
-	     <tr>
-              <td><?php echo $archive['version']; ?></td>
-              <td><?php echo $archive['file_size']; ?></td>
-              <td><?php echo $archive['file_icon']; ?></td>
-              <td><?php echo $archive['downloads']; ?></td>
-              <td><?php echo JHtml::_('date', $archive['archived'], JText::_('DATE_FORMAT_LC2')); ?></td>
-              <td><a href="<?php echo $downloadLink.'&id='.$this->item->id.'&version='.$archive['version']; ?>" class="btn btn-info" target="_blank">
-		<span class="icon-download"></span>&#160;<?php echo JText::_('COM_OKEYDOC_BUTTON_DOWNLOAD'); ?></a></td>
-	     </tr>
-           <?php endforeach; ?>
- 
-          </table>
+	  <?php echo JLayoutHelper::render('document.versions', array('archives' => $this->archives, 'doc_id' => $this->item->id)); ?>
 	</div>
 	<?php echo JHtml::_('bootstrap.endTab'); ?>
       <?php endif; ?>

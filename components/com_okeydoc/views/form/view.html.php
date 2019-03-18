@@ -20,7 +20,7 @@ class OkeydocViewForm extends JViewLegacy
   protected $return_page = null;
   protected $isNew = 0;
   protected $location = null;
-  protected $archives;
+  protected $extDocLinkings;
 
   function display($tpl = null)
   {
@@ -38,7 +38,7 @@ class OkeydocViewForm extends JViewLegacy
     $this->state = $this->get('State');
     $this->item = $this->get('Item');
     $this->return_page	= $this->get('ReturnPage');
-    $this->archives = $this->getModel()->getArchives($this->item->id);
+    $this->extDocLinkings = $this->getModel()->getExternalDocumentLinkings($this->item->id);
 
     //Check if the user is allowed to create a new document.
     if(empty($this->item->id)) {

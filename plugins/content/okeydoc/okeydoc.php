@@ -117,7 +117,7 @@ class plgContentOkeydoc extends JPlugin
         $this->insertDocumentLinkings($values);
       }
     }
-    elseif($context == 'com_categories.category') {
+    elseif($context == 'com_categories.category' && $data->extension == 'com_content') {
       $docIds = $this->searchDocumentLinks($data->description);
       $this->deleteDocumentLinkings(null, $data->id, 'category', 'external');
 
@@ -161,7 +161,7 @@ class plgContentOkeydoc extends JPlugin
       $docIds = $this->searchDocumentLinks($text);
       $this->deleteDocumentLinkings($docIds, $data->id, 'article', 'external');
     }
-    elseif($context == 'com_categories.category') {
+    elseif($context == 'com_categories.category' && $data->extension == 'com_content') {
       $docIds = $this->searchDocumentLinks($data->description);
       $this->deleteDocumentLinkings($docIds, $data->id, 'category', 'external');
     }

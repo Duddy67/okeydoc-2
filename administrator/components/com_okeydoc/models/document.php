@@ -5,9 +5,9 @@
  * @license GNU General Public License version 3, or later
  */
 
-
 defined('_JEXEC') or die; //No direct access to this file.
-jimport('joomla.application.component.modeladmin');
+
+
 require_once JPATH_ADMINISTRATOR.'/components/com_okeydoc/helpers/okeydoc.php';
 
 
@@ -148,11 +148,12 @@ class OkeydocModelDocument extends JModelAdmin
     $query = $db->getQuery(true);
     $linkings = array('article' => array(), 'category' => array());
 
-    $query->select('item_id, item_type, title')
-          ->from('#__okeydoc_document_linking')
-          ->join('LEFT', '#__content ON id=item_id')
-          ->where('doc_id='.(int)$pk.' AND linking_type="external"')
-          ->order('item_type ASC');
+    $query->select('d.item_id, d.item_type, a.title AS article_title, c.title AS category_title')
+          ->from('#__okeydoc_document_linking AS d')
+          ->join('LEFT', '#__content AS a ON a.id=d.item_id')
+          ->join('LEFT', '#__categories AS c ON c.id=d.item_id')
+          ->where('d.doc_id='.(int)$pk.' AND d.linking_type="external"')
+          ->order('d.item_type ASC');
     $db->setQuery($query);
     $results = $db->loadAssocList();
 

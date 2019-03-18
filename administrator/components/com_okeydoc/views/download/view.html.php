@@ -1,11 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2017 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
+
 
 JLoader::register('DownloadTrait', JPATH_ADMINISTRATOR.'/components/com_okeydoc/traits/download.php');
 
