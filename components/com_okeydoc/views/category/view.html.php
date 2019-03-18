@@ -7,13 +7,17 @@
 
 defined('_JEXEC') or die;
 
+JLoader::register('FilemanagerTrait', JPATH_ADMINISTRATOR.'/components/com_okeydoc/traits/filemanager.php');
 use Joomla\Registry\Registry;
+
 
 /**
  * HTML View class for the Okey DOC 2 component.
  */
 class OkeydocViewCategory extends JViewCategory
 {
+  use FilemanagerTrait;
+
   /**
    * Execute and display a template script.
    *
@@ -83,6 +87,10 @@ class OkeydocViewCategory extends JViewCategory
       // No link for ROOT category
       if($item->parent_alias == 'root') {
 	$item->parent_slug = null;
+      }
+
+      if($item->file_size != 'unknown') {
+	$item->conversion = $this->byteConverter($item->file_size);
       }
     }
 

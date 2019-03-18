@@ -7,8 +7,9 @@
 
 defined('_JEXEC') or die; //No direct access to this file.
 
+
 /**
- * Provides some utility functions relating to the file downloading.
+ * Provides a file downloading function.
  *
  */
 
@@ -22,12 +23,14 @@ trait DownloadTrait
     $id = $jinput->get('id', 0, 'uint');
     // The version number of the file archive to download.
     $version = $jinput->get('version', 0, 'uint');
-    // The origin of the link which calls this script. 
-    $link = $jinput->get('link', 'component', 'string');
-
     // Gets the user's access view.
     $user = JFactory::getUser();
-    //file_put_contents('debog_file.txt', print_r($user, true));
+
+    if($version && !$isAdmin) {
+      // Cannot download a previous version of the current file from the front-end. 
+      echo '<div class="alert alert-no-items">'.JText::_('COM_OKEYDOC_DOWNLOAD_UNAUTHORISED').'</div>';
+      return;
+    }
 
     if($id) {
       // Retrieves some data from the document. 
@@ -97,7 +100,7 @@ trait DownloadTrait
 	if($document->file_path) {
 	  if(!$version) {
 	    // Increment the download counter for this document.
-	    // Note: Previous file versions are not incremented.
+	    // Note: Previous versions of the current file are not incremented.
 	    $query->clear();
 	    $query->update('#__okeydoc_document')
 		  ->set('downloads=downloads+1')
@@ -107,7 +110,7 @@ trait DownloadTrait
 	  }
 
 	  if($document->file_location === 'url') {
-	    // Redirects with the url to the file.
+	    // Redirects with the url file.
 	    JFactory::getApplication()->redirect($document->file_path);
 	    return;
 	  }

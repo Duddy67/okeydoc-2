@@ -129,13 +129,13 @@ Joomla.submitbutton = function(task)
 		<?php echo $this->form->getControlGroup('articleids'); ?>
 
 		<?php if(!empty($this->extDocLinkings['article'])) { 
-			echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['article'], 'link_type' => 'article')); 
+			echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['article'], 'link_type' => 'article'), JPATH_ADMINISTRATOR.'/components/com_okeydoc/layouts'); 
 		      } ?>
 
 		<?php echo $this->form->getControlGroup('contcatids'); ?>
 
 		<?php if(!empty($this->extDocLinkings['category'])) { 
-			echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['category'], 'link_type' => 'category')); 
+			echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['category'], 'link_type' => 'category'), JPATH_ADMINISTRATOR.'/components/com_okeydoc/layouts'); 
 		      } ?>
 		<span class="link-document-space"></span>
 	      </div>

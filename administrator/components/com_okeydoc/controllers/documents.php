@@ -1,16 +1,14 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-
-defined('_JEXEC') or die; //No direct access to this file.
+// No direct access to this file.
+defined('_JEXEC') or die; 
  
-jimport('joomla.application.component.controlleradmin');
  
-
 class OkeydocControllerDocuments extends JControllerAdmin
 {
   /**

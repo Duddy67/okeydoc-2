@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2019 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
@@ -20,7 +20,7 @@ $linkType = $displayData['link_type'];
    </tr>
    <?php foreach($extDocLinkings as $extDocLinking) : ?>
      <tr>
-      <td><?php echo $extDocLinking['title']; ?></td>
+      <td><?php echo $extDocLinking[$linkType.'_title']; ?></td>
       <td><?php echo $extDocLinking['item_id']; ?></td>
      </tr>
    <?php endforeach; ?>

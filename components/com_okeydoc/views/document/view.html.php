@@ -1,21 +1,24 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
 require_once JPATH_COMPONENT_SITE.'/helpers/route.php';
 require_once JPATH_ROOT.'/administrator/components/com_okeydoc/helpers/okeydoc.php';
+JLoader::register('FilemanagerTrait', JPATH_ADMINISTRATOR.'/components/com_okeydoc/traits/filemanager.php');
+
 
 /**
  * HTML View class for the Okey DOC 2 component.
  */
 class OkeydocViewDocument extends JViewLegacy
 {
+  use FilemanagerTrait;
+
   protected $state;
   protected $item;
   protected $nowDate;
@@ -49,6 +52,10 @@ class OkeydocViewDocument extends JViewLegacy
     $model->hit();
 
     $this->nowDate = JFactory::getDate()->toSql();
+
+    if($this->item->file_size != 'unknown') {
+      $this->item->conversion = $this->byteConverter($this->item->file_size);
+    }
 
     $this->setDocument();
 

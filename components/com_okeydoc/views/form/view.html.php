@@ -39,7 +39,7 @@ class OkeydocViewForm extends JViewLegacy
     $this->item = $this->get('Item');
     $this->return_page	= $this->get('ReturnPage');
     $this->extDocLinkings = $this->getModel()->getExternalDocumentLinkings($this->item->id);
-
+echo JURI::root();
     //Check if the user is allowed to create a new document.
     if(empty($this->item->id)) {
       $authorised = $user->authorise('core.create', 'com_okeydoc') || (count($user->getAuthorisedCategories('com_okeydoc', 'core.create')));

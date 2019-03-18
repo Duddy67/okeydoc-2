@@ -1,43 +1,60 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-
-defined('_JEXEC') or die; //No direct access to this file.
+// No direct access to this file.
+defined('_JEXEC') or die; 
  
-jimport('joomla.application.component.controllerform');
- 
-
 
 class OkeydocControllerDocument extends JControllerForm
 {
-
+  /**
+   * Method to save a record.
+   *
+   * @param   string  $key     The name of the primary key of the URL variable.
+   * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+   *
+   * @return  boolean  True if successful, false otherwise.
+   *
+   * @since   1.6
+   */
   public function save($key = null, $urlVar = null)
   {
-    //Get the jform data.
+    // Gets the jform data.
     //$data = $this->input->post->get('jform', array(), 'array');
 
-    //Gets the current date and time (UTC).
+    // Gets the current date and time (UTC).
     //$now = JFactory::getDate()->toSql();
 
-    //Saves the modified jform data array 
+    // Saves the modified jform data array 
     //$this->input->post->set('jform', $data);
 
-    //Hand over to the parent function.
+    // Hands over to the parent function.
     return parent::save($key = null, $urlVar = null);
   }
 
 
-  //Overrided function.
+  /**
+   * Method to check if you can edit an existing record.
+   *
+   * Extended classes can override this if necessary.
+   *
+   * @param   array   $data  An array of input data.
+   * @param   string  $key   The name of the key for the primary key; default is id.
+   *
+   * @return  boolean
+   *
+   * @since   1.6
+   */
   protected function allowEdit($data = array(), $key = 'id')
   {
     $itemId = $data['id'];
     $user = JFactory::getUser();
 
-    //Get the item owner id.
+    // Gets the item owner id.
     $db = JFactory::getDbo();
     $query = $db->getQuery(true);
     $query->select('created_by')
@@ -49,12 +66,12 @@ class OkeydocControllerDocument extends JControllerForm
     $canEdit = $user->authorise('core.edit', 'com_okeydoc');
     $canEditOwn = $user->authorise('core.edit.own', 'com_okeydoc') && $createdBy == $user->id;
 
-    //Allow edition. 
+    // Allows edition. 
     if($canEdit || $canEditOwn) {
       return 1;
     }
 
-    //Hand over to the parent function.
+    // Hands over to the parent function.
     return parent::allowEdit($data = array(), $key = 'id');
   }
 }

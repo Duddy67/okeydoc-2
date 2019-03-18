@@ -1,25 +1,28 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-require_once JPATH_ROOT.'/administrator/components/com_okeydoc/helpers/okeydoc.php';
  
-// import Joomla table library
+// import Joomla table and filesystem libraries.
 jimport('joomla.database.table');
-JIMPORT('joomla.filesystem.file');
+jimport('joomla.filesystem.file');
  
+JLoader::register('FilemanagerTrait', JPATH_ADMINISTRATOR.'/components/com_okeydoc/traits/filemanager.php');
 use Joomla\Registry\Registry;
+
 
 /**
  * Document table class
  */
 class OkeydocTableDocument extends JTable
 {
+  use FilemanagerTrait;
+
   public $jform = null;
 
   /**
@@ -191,7 +194,7 @@ class OkeydocTableDocument extends JTable
 
     if((!$this->id || $jform['replace_file'] == 1) && $jform['file_location'] == 'server') {
       //Uploads the file on the server.
-      $file = OkeydocHelper::uploadFile();
+      $file = $this->uploadFile();
 
       //Checks for error.
       if(!empty($file['error'])) {
@@ -212,7 +215,7 @@ class OkeydocTableDocument extends JTable
       //Get the file extension and convert it to lowercase.
       $ext = strtolower(JFile::getExt($fileName));
       $fileIcon = 'generic.gif';
-      $fileSettings = OkeydocHelper::getFileSettings();
+      $fileSettings = $this->getFileSettings();
 
       if(in_array($ext, $fileSettings['extensions_list'])) {
 	$fileIcon = $ext.'.gif';

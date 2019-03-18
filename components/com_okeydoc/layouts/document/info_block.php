@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
@@ -95,7 +95,7 @@ defined('JPATH_BASE') or die;
 	    $fileSize = JText::_('COM_OKEYDOC_UNKNOWN');
 	  }
           else {
-	    $conversion = OkeydocHelper::byteConverter($displayData['item']->file_size);
+	    $conversion = $displayData['item']->conversion;
 	    $fileSize = JText::sprintf('COM_OKEYDOC_BYTE_CONVERTER_'.$conversion['multiple'], $conversion['result']);
 	  }
     ?>

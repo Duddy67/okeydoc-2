@@ -1,21 +1,27 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-
-defined('_JEXEC') or die; //No direct access to this file.
-
-jimport('joomla.application.component.modellist');
-
+// No direct access to this file.
+defined('_JEXEC') or die; 
 
 
 class OkeydocModelDocuments extends JModelList
 {
+  /**
+   * Constructor.
+   *
+   * @param   array  $config  An optional associative array of configuration settings.
+   *
+   * @see     \JModelLegacy
+   * @since   1.6
+   */
   public function __construct($config = array())
   {
+    // Add the ordering filtering fields whitelist.
     if(empty($config['filter_fields'])) {
       $config['filter_fields'] = array('id', 'd.id',
 				       'title', 'd.title', 
@@ -37,6 +43,22 @@ class OkeydocModelDocuments extends JModelList
   }
 
 
+  /**
+   * Method to auto-populate the model state.
+   *
+   * This method should only be called once per instantiation and is designed
+   * to be called on the first call to the getState() method unless the model
+   * configuration flag to ignore the request is set.
+   *
+   * Note. Calling getState in this method will result in recursion.
+   *
+   * @param   string  $ordering   An optional ordering field.
+   * @param   string  $direction  An optional direction (asc|desc).
+   *
+   * @return  void
+   *
+   * @since   1.6
+   */
   protected function populateState($ordering = null, $direction = null)
   {
     // Initialise variables.
@@ -48,7 +70,7 @@ class OkeydocModelDocuments extends JModelList
       $this->context .= '.'.$layout;
     }
 
-    //Get the state values set by the user.
+    // Gets the state values set by the user.
     $search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
     $this->setState('filter.search', $search);
 
@@ -83,6 +105,19 @@ class OkeydocModelDocuments extends JModelList
   }
 
 
+  /**
+   * Method to get a store id based on the model configuration state.
+   *
+   * This is necessary because the model is used by the component and
+   * different modules that might need different sets of data or different
+   * ordering requirements.
+   *
+   * @param   string  $id  An identifier string to generate the store id.
+   *
+   * @return  string  A store id.
+   *
+   * @since   1.6
+   */
   protected function getStoreId($id = '')
   {
     // Compile the store id.
@@ -97,11 +132,18 @@ class OkeydocModelDocuments extends JModelList
   }
 
 
+  /**
+   * Method to get a \JDatabaseQuery object for retrieving the data set from a database.
+   *
+   * @return  \JDatabaseQuery  A \JDatabaseQuery object to retrieve the data set.
+   *
+   * @since   1.6
+   */
   protected function getListQuery()
   {
-    //Create a new JDatabaseQuery object.
     $db = $this->getDbo();
     $query = $db->getQuery(true);
+
     $user = JFactory::getUser();
 
     // Select the required fields from the table.
@@ -109,7 +151,7 @@ class OkeydocModelDocuments extends JModelList
 				   'd.access,d.ordering,d.created_by,d.checked_out,d.checked_out_time,d.language'))
 	  ->from('#__okeydoc_document AS d');
 
-    //Get the user name.
+    // Gets the user name.
     $query->select('us.name AS user')
 	  ->join('LEFT', '#__users AS us ON us.id = d.created_by');
 
@@ -129,7 +171,7 @@ class OkeydocModelDocuments extends JModelList
     $query->select('al.title AS access_level')
 	  ->join('LEFT', '#__viewlevels AS al ON al.id = d.access');
 
-    //Filter by component category.
+    // Filter by component category.
     $categoryId = $this->getState('filter.category_id');
     if(is_numeric($categoryId)) {
       $query->where('d.catid = '.(int)$categoryId);
@@ -140,7 +182,7 @@ class OkeydocModelDocuments extends JModelList
       $query->where('d.catid IN ('.$categoryId.')');
     }
 
-    //Filter by title search.
+    // Filter by title search.
     $search = $this->getState('filter.search');
     if(!empty($search)) {
       if(stripos($search, 'id:') === 0) {
@@ -164,7 +206,7 @@ class OkeydocModelDocuments extends JModelList
       $query->where('ca.access IN ('.$groups.')');
     }
 
-    //Filter by publication state.
+    // Filter by publication state.
     $published = $this->getState('filter.published');
     if(is_numeric($published)) {
       $query->where('d.published='.(int)$published);
@@ -173,14 +215,14 @@ class OkeydocModelDocuments extends JModelList
       $query->where('(d.published IN (0, 1))');
     }
 
-    //Filter by user.
+    // Filter by user.
     $userId = $this->getState('filter.user_id');
     if(is_numeric($userId)) {
       $type = $this->getState('filter.user_id.include', true) ? '= ' : '<>';
       $query->where('d.created_by'.$type.(int) $userId);
     }
 
-    //Filter by language.
+    // Filter by language.
     if($language = $this->getState('filter.language')) {
       $query->where('d.language = '.$db->quote($language));
     }
@@ -203,7 +245,7 @@ class OkeydocModelDocuments extends JModelList
       $query->where('d.published=1');
     }
 
-    //Add the list to the sort.
+    // Adds the list to the sort.
     $orderCol = $this->state->get('list.ordering', 'd.title');
     $orderDirn = $this->state->get('list.direction'); //asc or desc
 
@@ -212,5 +254,4 @@ class OkeydocModelDocuments extends JModelList
     return $query;
   }
 }
-
 

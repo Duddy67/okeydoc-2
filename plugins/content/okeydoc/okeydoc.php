@@ -67,9 +67,7 @@ class plgContentOkeydoc extends JPlugin
 
   public function onContentAfterSave($context, $data, $isNew)
   {
-      file_put_contents('debog_file.txt', print_r($context, true));
     if($context == 'com_okeydoc.document' || $context == 'com_okeydoc.form') {
-
       // Set the content categories and/or articles linked to the document.
       
       // First deletes the possible previous categories and articles linked to this document.
@@ -137,6 +135,16 @@ class plgContentOkeydoc extends JPlugin
 
   public function onContentBeforeDelete($context, $data)
   {
+    if($context == 'com_okeydoc.document') {
+      $model = JModelLegacy::getInstance('Document', 'OkeydocModel');
+      $linkinks = $model->getExternalDocumentLinkings($data->id);
+
+      if(!empty($linkinks['article']) || !empty($linkinks['category'])) {
+	JFactory::getApplication()->enqueueMessage(JText::_('COM_OKEYDOC_WARNING_DOCUMENT_STILL_LINKED'), 'Warning');
+	return false;
+      }
+    }
+
     return true;
   }
 

@@ -8,7 +8,9 @@
  */
 
 defined('_JEXEC') or die;
-require_once JPATH_ROOT.'/administrator/components/com_okeydoc/helpers/okeydoc.php';
+
+JLoader::register('FilemanagerTrait', JPATH_ADMINISTRATOR.'/components/com_okeydoc/traits/filemanager.php');
+
 
 /**
  * Categories view class for the Category package.
@@ -17,6 +19,8 @@ require_once JPATH_ROOT.'/administrator/components/com_okeydoc/helpers/okeydoc.p
  */
 class CategoriesViewCategories extends JViewLegacy
 {
+	use FilemanagerTrait;
+
 	/**
 	 * An array of items
 	 *
@@ -92,8 +96,8 @@ class CategoriesViewCategories extends JViewLegacy
 		foreach ($this->items as &$item)
 		{
 			$this->ordering[$item->parent_id][] = $item->id;
-			//Override: Gets the number of files linked to the category.
-			$item->files = OkeydocHelper::getNumberOfFiles($item->id);
+			// Override: Gets the number of files linked to the category.
+			$item->files = $this->getNumberOfFiles($item->id);
 		}
 
 		// Levels filter - Used in Hathor.
@@ -132,7 +136,7 @@ class CategoriesViewCategories extends JViewLegacy
 
 		//
 		//$this->_path['template'] = JPATH_ROOT.'/plugins/system/notebook/code/com_categories/views/tmpl/';
-		//Override: Adds the path to the specific template.
+		// Override: Adds the path to the specific template.
 		$this->_addPath('template', JPATH_ROOT.'/plugins/system/okeydoc/code/com_categories/views/tmpl/');
 
 		return parent::display($tpl);
