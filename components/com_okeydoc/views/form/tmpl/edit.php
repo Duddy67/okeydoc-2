@@ -68,7 +68,7 @@ Joomla.submitbutton = function(task)
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#details" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_DETAILS') ?></a></li>
 		<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_PUBLISHING') ?></a></li>
-		<li><a href="#link-document" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_LINK_DOCUMENT') ?></a></li>
+		<li><a href="#link-document" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_DOCUMENT_LINKINGS') ?></a></li>
 		<li><a href="#language" data-toggle="tab"><?php echo JText::_('JFIELD_LANGUAGE_LABEL') ?></a></li>
 		<li><a href="#metadata" data-toggle="tab"><?php echo JText::_('COM_OKEYDOC_TAB_METADATA') ?></a></li>
 	</ul>

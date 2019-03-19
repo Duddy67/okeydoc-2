@@ -43,7 +43,7 @@ class OkeydocViewDocument extends JViewLegacy
     }
 
     $this->addToolBar();
-    //$this->setDocument();
+    $this->setDocument();
 
     // Displays the template.
     parent::display($tpl);
@@ -116,7 +116,7 @@ class OkeydocViewDocument extends JViewLegacy
   protected function setDocument() 
   {
     $doc = JFactory::getDocument();
-    $doc->addStyleSheet(JURI::base().'components/com_okeydoc/okeydoc.css');
+    $doc->addStyleSheet(JURI::base().'components/com_okeydoc/css/okeydoc.css');
   }
 }
 

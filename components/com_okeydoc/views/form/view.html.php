@@ -85,7 +85,7 @@ class OkeydocViewForm extends JViewLegacy
       $this->form->setFieldAttribute('catid', 'readonly', 'true');
     }
 
-    //$this->setDocument();
+    $this->setDocument();
 
     parent::display($tpl);
   }

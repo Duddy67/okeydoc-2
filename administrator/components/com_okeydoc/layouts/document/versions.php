@@ -12,7 +12,7 @@ $archives = $displayData['archives'];
 $docId = $displayData['doc_id'];
 ?>
 
-<table class="table">
+<table class="table-striped version-table">
  <tr>
    <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_VERSION'); ?></th>
    <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_SIZE'); ?></th>
