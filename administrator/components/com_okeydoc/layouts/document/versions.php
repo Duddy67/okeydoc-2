@@ -21,11 +21,18 @@ $docId = $displayData['doc_id'];
    <th><?php echo JText::_('COM_OKEYDOC_ARCHIVE_ARCHIVED'); ?></th>
    <th></th>
  </tr>
- <?php foreach($archives as $key => $archive) : ?>
+ <?php foreach($archives as $key => $archive) :
+         // Converts the file size.
+         if($archive['file_size'] != 'unknown') {
+	   $fileSize = JText::sprintf('COM_OKEYDOC_BYTE_CONVERTER_'.$archive['conversion']['multiple'],$archive['conversion']['result']);
+	 } 
+	 else {
+	   $fileSize = JText::_('COM_OKEYDOC_UNKNOWN');
+	 }       ?>
    <tr>
     <td><?php echo $archive['version']; ?></td>
-    <td><?php echo $archive['file_size']; ?></td>
-    <td><?php echo $archive['file_icon']; ?></td>
+    <td><?php echo $fileSize; ?></td>
+    <td><?php echo $archive['file_type']; ?></td>
     <td><?php echo $archive['downloads']; ?></td>
     <td><?php echo JHtml::_('date', $archive['archived'], JText::_('DATE_FORMAT_LC2')); ?></td>
     <td><a href="<?php echo JURI::base().'index.php?option=com_okeydoc&view=download&tmpl=component&id='.$docId.'&version='.$archive['version']; ?>" class="btn btn-info" target="_blank">

@@ -1,14 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-
-defined('_JEXEC') or die; // No direct access.
-
-jimport('joomla.application.component.controller');
+// No direct access.
+defined('_JEXEC') or die; 
 
 
 class OkeydocController extends JControllerLegacy
@@ -43,7 +41,7 @@ class OkeydocController extends JControllerLegacy
     // Document we are using d_id to avoid collisions with the router and the return page.
     // Frontend is a bit messier than the backend.
     $id = $this->input->getInt('d_id');
-    //Set the view, (categories by default).
+    // Sets the view, (categories by default).
     $vName = $this->input->getCmd('view', 'categories');
     $this->input->set('view', $vName);
 
@@ -54,7 +52,7 @@ class OkeydocController extends JControllerLegacy
       return false;
     }
 
-    //Make sure the parameters passed in the input by the component are safe.
+    // Make sure the parameters passed in the input by the component are safe.
     $safeurlparams = array('catid' => 'INT', 'id' => 'INT',
 			    'cid' => 'ARRAY', 'limit' => 'UINT',
 			    'limitstart' => 'UINT', 'return' => 'BASE64',
@@ -62,7 +60,7 @@ class OkeydocController extends JControllerLegacy
 			    'filter-ordering' => 'STRING', 'lang' => 'CMD',
 			    'Itemid' => 'INT');
 
-    //Display the view.
+    // Displays the view.
     parent::display($cachable, $safeurlparams);
   }
 

@@ -1,11 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-defined('_JEXEC') or die; //No direct access to this file.
+// No direct access to this file.
+defined('_JEXEC') or die; 
 
 
 class OkeydocModelDocument extends JModelItem
@@ -30,7 +31,7 @@ class OkeydocModelDocument extends JModelItem
     $pk = $app->input->getInt('id');
     $this->setState('document.id', $pk);
 
-    //Load the global parameters of the component.
+    // Load the global parameters of the component.
     $params = $app->getParams();
     $this->setState('params', $params);
 
@@ -38,7 +39,7 @@ class OkeydocModelDocument extends JModelItem
   }
 
 
-  //Returns a Table object, always creating it.
+  // Returns a Table object, always creating it.
   public function getTable($type = 'Document', $prefix = 'OkeydocTable', $config = array()) 
   {
     return JTable::getInstance($type, $prefix, $config);

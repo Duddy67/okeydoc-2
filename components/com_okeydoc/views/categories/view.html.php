@@ -1,11 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
+
 
 /**
  * Okey DOC 2 categories view.
@@ -32,6 +33,7 @@ class OkeydocViewCategories extends JViewCategories
    * @since  3.2
    */
   protected $viewName = 'document';
+
 
   /**
    * Execute and display a template script.
@@ -74,17 +76,21 @@ class OkeydocViewCategories extends JViewCategories
     $this->parent = &$parent;
     $this->items  = &$items;
 
-    $this->setDocument();
+    //$this->setDocument();
 
     return parent::display($tpl);
   }
 
 
+  /**
+   * Includes possible css and Javascript files.
+   *
+   * @return  void
+   */
   protected function setDocument() 
   {
-    //Include css file (if needed).
-    //$doc = JFactory::getDocument();
-    //$doc->addStyleSheet(JURI::base().'components/com_okeydoc/css/okeydoc.css');
+    $doc = JFactory::getDocument();
+    $doc->addStyleSheet(JURI::base().'components/com_okeydoc/css/okeydoc.css');
   }
 }
 

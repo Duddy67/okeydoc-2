@@ -1,15 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-
 // No direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 
 class OkeydocViewForm extends JViewLegacy
@@ -22,11 +19,22 @@ class OkeydocViewForm extends JViewLegacy
   protected $location = null;
   protected $extDocLinkings;
 
+
+  /**
+   * Execute and display a template script.
+   *
+   * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+   *
+   * @return  mixed  A string if successful, otherwise an Error object.
+   *
+   * @see     \JViewLegacy::loadTemplate()
+   * @since   3.0
+   */
   function display($tpl = null)
   {
     $user = JFactory::getUser();
 
-    //Redirect unregistered users to the login page.
+    // Redirects unregistered users to the login page.
     if($user->guest) {
       $app = JFactory::getApplication();
       $app->redirect('index.php?option=com_users&view=login'); 
@@ -39,13 +47,14 @@ class OkeydocViewForm extends JViewLegacy
     $this->item = $this->get('Item');
     $this->return_page	= $this->get('ReturnPage');
     $this->extDocLinkings = $this->getModel()->getExternalDocumentLinkings($this->item->id);
-echo JURI::root();
-    //Check if the user is allowed to create a new document.
+
+    // Checks if the user is allowed to create a new document.
     if(empty($this->item->id)) {
       $authorised = $user->authorise('core.create', 'com_okeydoc') || (count($user->getAuthorisedCategories('com_okeydoc', 'core.create')));
       $this->isNew = 1;
     }
-    else { //Check if the user is allowed to edit this document. 
+    // Checks if the user is allowed to edit this document. 
+    else { 
       $authorised = $this->item->params->get('access-edit');
     }
 
@@ -62,7 +71,7 @@ echo JURI::root();
 
     // Create a shortcut to the parameters.
     $params = &$this->state->params;
-    //Get the possible extra class name.
+    // Gets the possible extra class name.
     $this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
     $this->params = $params;
@@ -82,10 +91,14 @@ echo JURI::root();
   }
 
 
+  /**
+   * Includes possible css and Javascript files.
+   *
+   * @return  void
+   */
   protected function setDocument() 
   {
-    //Include css file (if needed).
-    //$doc = JFactory::getDocument();
-    //$doc->addStyleSheet(JURI::base().'components/com_okeydoc/css/okeydoc.css');
+    $doc = JFactory::getDocument();
+    $doc->addStyleSheet(JURI::base().'components/com_okeydoc/css/okeydoc.css');
   }
 }

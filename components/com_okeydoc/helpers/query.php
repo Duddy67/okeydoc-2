@@ -1,11 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
+
 
 /**
  * Okey DOC 2 Component Query Helper
@@ -27,25 +28,18 @@ class OkeydocHelperQuery
    */
   public static function orderbyPrimary($orderby)
   {
-    //Set the prefix to use according to the view.
-    $view = JFactory::getApplication()->input->get('view');
-    $prefix = 'ca.'; //Use okeydoc table.
-    if($view == 'tag') {
-      $prefix = 'd.'; //Use mapping table.
-    }
-
     switch ($orderby)
     {
       case 'alpha' :
-	      $orderby = $prefix.'path, ';
+	      $orderby = 'ca.path, ';
 	      break;
 
       case 'ralpha' :
-	      $orderby = $prefix.'path DESC, ';
+	      $orderby = 'ca.path DESC, ';
 	      break;
 
       case 'order' :
-	      $orderby = $prefix.'lft, ';
+	      $orderby = 'ca.lft, ';
 	      break;
 
       default :
@@ -55,6 +49,7 @@ class OkeydocHelperQuery
 
     return $orderby;
   }
+
 
   /**
    * Translate an order code to a field for secondary category ordering.
@@ -68,13 +63,6 @@ class OkeydocHelperQuery
   public static function orderbySecondary($orderby, $orderDate = 'created')
   {
     $queryDate = self::getQueryDate($orderDate);
-
-    //Set the prefix to use according to the view.
-    $view = JFactory::getApplication()->input->get('view');
-    $prefix = 'd.'; //Use okeydoc table.
-    if($view == 'tag') {
-      $prefix = 'tm.'; //Use mapping table.
-    }
 
     switch ($orderby)
     {
@@ -95,11 +83,11 @@ class OkeydocHelperQuery
 	      break;
 
       case 'order' :
-	      $orderby = $prefix.'ordering';
+	      $orderby = 'd.ordering';
 	      break;
 
       case 'rorder' :
-	      $orderby = $prefix.'ordering DESC';
+	      $orderby = 'd.ordering DESC';
 	      break;
 
       case 'author' :
@@ -111,12 +99,13 @@ class OkeydocHelperQuery
 	      break;
 
       default :
-	      $orderby = $prefix.'ordering';
+	      $orderby = 'd.ordering';
 	      break;
     }
 
     return $orderby;
   }
+
 
   /**
    * Translate an order code to a field for primary category ordering.
@@ -148,6 +137,7 @@ class OkeydocHelperQuery
 
     return $queryDate;
   }
+
 
   /**
    * Method to order the intro documents array for ordering

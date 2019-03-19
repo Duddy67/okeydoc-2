@@ -80,7 +80,7 @@ defined('JPATH_BASE') or die;
           $fileName = $displayData['item']->file_name;
           if($displayData['item']->file_location == 'server') {
 	    preg_match('#\.([a-z0-9]+)$#', $displayData['item']->file_name, $matches);
-	    $fileName = $displayData['item']->alias.'.'.$matches[1];
+	    $fileName = JFilterOutput::stringURLSafe($displayData['item']->title).'.'.$matches[1];
 	  }
     ?>
     <dd class="file">

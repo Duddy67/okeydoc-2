@@ -1,15 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-
-//Document: Override some parent form methods (libraries/legacy/controllers/form.php).
-//      See the file for more details.
-
 defined('_JEXEC') or die;
+
 
 /**
  * @package     Joomla.Site
@@ -41,6 +38,7 @@ class OkeydocControllerDocument extends JControllerForm
    */
   protected $urlVar = 'd.id';
 
+
   /**
    * Method to add a new record.
    *
@@ -56,6 +54,7 @@ class OkeydocControllerDocument extends JControllerForm
     }
   }
 
+
   /**
    * Method override to check if you can add a new record.
    *
@@ -67,10 +66,10 @@ class OkeydocControllerDocument extends JControllerForm
    */
   protected function allowAdd($data = array())
   {
-    //Document: If a category id is found, check whether the user is allowed to create an item into this category.
+    // Note: If a category id is found, check whether the user is allowed to create an item into this category.
 
     $user = JFactory::getUser();
-    //Get a possible category id passed in the data or URL.
+    // Gets a possible category id passed in the data or URL.
     $categoryId = JArrayHelper::getValue($data, 'catid', $this->input->getInt('catid'), 'int');
     $allow = null;
 
@@ -87,6 +86,7 @@ class OkeydocControllerDocument extends JControllerForm
       return $allow;
     }
   }
+
 
   /**
    * Method override to check if you can edit an existing record.
@@ -137,6 +137,7 @@ class OkeydocControllerDocument extends JControllerForm
     return parent::allowEdit($data, $key);
   }
 
+
   /**
    * Method to cancel an edit.
    *
@@ -153,6 +154,7 @@ class OkeydocControllerDocument extends JControllerForm
     // Redirect to the return page.
     $this->setRedirect($this->getReturnPage());
   }
+
 
   /**
    * Method to edit an existing record.
@@ -172,6 +174,7 @@ class OkeydocControllerDocument extends JControllerForm
     return $result;
   }
 
+
   /**
    * Method to get a model object, loading it if required.
    *
@@ -189,6 +192,7 @@ class OkeydocControllerDocument extends JControllerForm
 
     return $model;
   }
+
 
   /**
    * Gets the URL arguments to append to an item redirect.
@@ -242,6 +246,7 @@ class OkeydocControllerDocument extends JControllerForm
     return $append;
   }
 
+
   /**
    * Get the return URL.
    *
@@ -277,11 +282,11 @@ class OkeydocControllerDocument extends JControllerForm
   protected function postSaveHook(JModelLegacy $model, $validData = array())
   {
     /* If ever needed.
-    //In case of a brand new item the only way to get its id (ie: the last inserted id) is from the session. 
+    // In case of a brand new item the only way to get its id (ie: the last inserted id) is from the session. 
     $itemId = $model->getState('form.id');
-    //Gets the item state as well.
+    // Gets the item state as well.
     $isNew = $model->getState('form.new');
-    //Gets the item data.
+    // Gets the item data.
     $data = $model->getItem($itemId);
     */
   }
@@ -302,10 +307,10 @@ class OkeydocControllerDocument extends JControllerForm
     $app = JFactory::getApplication();
     $recordId = $this->input->getInt($urlVar);
 
-    //Get the jform data.
+    // Gets the jform data.
     //$data = $this->input->post->get('jform', array(), 'array');
     //Code...
-    //Update jform with the modified data.
+    // Updates jform with the modified data.
     //$this->input->post->set('jform', $data);
 
     $result = parent::save($key, $urlVar);

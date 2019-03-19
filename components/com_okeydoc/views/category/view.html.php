@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
@@ -60,10 +60,20 @@ class OkeydocViewCategory extends JViewCategory
   protected $user;
   protected $uri;
 
+
+  /**
+   * Execute and display a template script.
+   *
+   * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+   *
+   * @return  mixed  A string if successful, otherwise an Error object.
+   *
+   * @since   3.2
+   */
   public function display($tpl = null)
   {
-    //Call parent method with common display elements (state, items etc...) used in
-    //category list displays.
+    // Calls parent method with common display elements (state, items etc...) used in
+    // category list displays.
     parent::commonCategoryDisplay();
 
     // Prepare the data
@@ -73,7 +83,7 @@ class OkeydocViewCategory extends JViewCategory
     $numIntro   = $params->def('num_intro_documents', 4);
     $numLinks   = $params->def('num_links', 4);
 
-    //Get the user object and the current url, (needed in the document edit layout).
+    // Gets the user object and the current url, (needed in the document edit layout).
     $this->user = JFactory::getUser();
     $this->uri = JUri::getInstance();
     $this->pagination = $this->get('Pagination');
@@ -99,7 +109,7 @@ class OkeydocViewCategory extends JViewCategory
     $app = JFactory::getApplication();
     $active = $app->getMenu()->getActive();
 
-    //The category has no itemId and thus is not linked to any menu item. 
+    // The category has no itemId and thus is not linked to any menu item. 
     if((!$active) || ((strpos($active->link, 'view=category') === false) ||
 		      (strpos($active->link, '&id='.(string)$this->category->id) === false))) {
       // Get the layout from the merged category params
@@ -112,14 +122,14 @@ class OkeydocViewCategory extends JViewCategory
       // We need to set the layout from the query in case this is an alternative menu item (with an alternative layout)
       $this->setLayout($active->query['layout']);
     }
-    //Document: In case the layout parameter is not found within the query, the default layout
-    //will be set.
+    // Note: In case the layout parameter is not found within the query, the default layout
+    //       will be set.
 
     // For blog layouts, preprocess the breakdown of leading, intro and linked articles.
     // This makes it much easier for the designer to just interrogate the arrays.
     if(($params->get('layout_type') == 'blog') || ($this->getLayout() == 'blog')) {
 
-      //Computes the number of extra items (if any).
+      // Computes the number of extra items (if any).
       $numExtra = 0;
       if(count($this->items) > ($numLeading + $numIntro + $numLinks)) {
 	$numExtra = count($this->items) - ($numLeading + $numIntro + $numLinks);
@@ -129,7 +139,7 @@ class OkeydocViewCategory extends JViewCategory
 	if($i < $numLeading) {
 	  $this->lead_items[] = $item;
 	}
-	//Adds the possible extra items to the intro items.
+	// Adds the possible extra items to the intro items.
 	elseif($i >= $numLeading && $i < $numLeading + $numIntro + $numExtra) {
 	  $this->intro_items[] = $item;
 	}
@@ -151,9 +161,9 @@ class OkeydocViewCategory extends JViewCategory
       }
     }
 
-    //Set the name of the active layout in params, (needed for the filter ordering layout).
+    // Sets the name of the active layout in params, (needed for the filter ordering layout).
     $this->params->set('active_layout', $this->getLayout());
-    //Set the filter_ordering parameter for the layout.
+    // Sets the filter_ordering parameter for the layout.
     $this->filter_ordering = $this->state->get('list.filter_ordering');
 
     $this->nowDate = JFactory::getDate()->toSql();
@@ -201,7 +211,7 @@ class OkeydocViewCategory extends JViewCategory
       $title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
     }
 
-    //If no title is find, set it to the category title. 
+    // If no title is find, set it to the category title. 
     if(empty($title)) {
       $title = $this->category->title;
     }
@@ -246,9 +256,13 @@ class OkeydocViewCategory extends JViewCategory
   }
 
 
+  /**
+   * Includes possible css and Javascript files.
+   *
+   * @return  void
+   */
   protected function setDocument() 
   {
-    //Include css file (if needed).
     $doc = JFactory::getDocument();
     $doc->addStyleSheet(JURI::base().'components/com_okeydoc/css/okeydoc.css');
   }

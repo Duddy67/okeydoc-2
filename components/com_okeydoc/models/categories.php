@@ -1,14 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-
-defined('_JEXEC') or die; //No direct access to this file.
-
-jimport('joomla.application.component.modellist');
+// No direct access to this file.
+defined('_JEXEC') or die; 
 
 
 class OkeydocModelCategories extends JModelList
@@ -30,6 +28,7 @@ class OkeydocModelCategories extends JModelList
   private $_parent = null;
 
   private $_items = null;
+
 
   /**
    * Method to auto-populate the model state.

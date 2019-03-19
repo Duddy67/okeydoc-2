@@ -76,6 +76,7 @@
 	<field name="contcatids" type="contentcategories" multiple="multiple"
 		label="COM_OKEYDOC_FIELD_ARTICLE_CATEGORIES_LABEL"
 		description="COM_OKEYDOC_FIELD_ARTICLE_CATEGORIES_DESC"
+		addfieldpath="/administrator/components/com_okeydoc/models/fields"
 		class="inputbox" >
 	</field>
 

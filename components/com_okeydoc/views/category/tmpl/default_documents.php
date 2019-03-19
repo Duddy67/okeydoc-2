@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
@@ -47,7 +47,7 @@ if(!empty($this->items)) {
       <tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid?>">
 
 	<td>
-	<?php  //Build the link to the login page for the user to login or register.
+	<?php  // Build the link to the login page for the user to login or register.
 	      if(!$item->params->get('access-view')) : 
 		$menu = JFactory::getApplication()->getMenu();
 		$active = $menu->getActive();
@@ -58,7 +58,7 @@ if(!empty($this->items)) {
 		$link->setVar('return', base64_encode($returnURL));
 	      endif; ?>
 
-	<?php if($item->params->get('access-view')) : //Set the link to the document page.
+	<?php if($item->params->get('access-view')) : // Sets the link to the document page.
 	      $link = JRoute::_(OkeydocHelperRoute::getDocumentRoute($item->slug, $item->catid));
 	  endif; ?>
 

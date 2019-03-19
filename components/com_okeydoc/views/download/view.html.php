@@ -11,17 +11,23 @@ JLoader::register('DownloadTrait', JPATH_ADMINISTRATOR.'/components/com_okeydoc/
 
 /**
  * HTML View class for the Okey DOC 2 component.
+ * Note: This view is only used to download a file by way of a url. No template is
+         displayed.
  */
 class OkeydocViewDownload extends JViewLegacy
 {
   use DownloadTrait;
 
-  protected $state;
-  protected $item;
-  protected $nowDate;
-  protected $user;
-  protected $uri;
-
+  /**
+   * Execute and display a template script.
+   *
+   * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+   *
+   * @return  mixed  A string if successful, otherwise an Error object.
+   *
+   * @see     \JViewLegacy::loadTemplate()
+   * @since   3.0
+   */
   public function display($tpl = null)
   {
     $this->downloadFile();

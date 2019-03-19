@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-require_once JPATH_COMPONENT_SITE.'/helpers/route.php';
-require_once JPATH_ROOT.'/administrator/components/com_okeydoc/helpers/okeydoc.php';
 JLoader::register('FilemanagerTrait', JPATH_ADMINISTRATOR.'/components/com_okeydoc/traits/filemanager.php');
 
 
@@ -25,6 +23,17 @@ class OkeydocViewDocument extends JViewLegacy
   protected $user;
   protected $uri;
 
+
+  /**
+   * Execute and display a template script.
+   *
+   * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+   *
+   * @return  mixed  A string if successful, otherwise an Error object.
+   *
+   * @see     \JViewLegacy::loadTemplate()
+   * @since   3.0
+   */
   public function display($tpl = null)
   {
     // Initialise variables
@@ -43,11 +52,11 @@ class OkeydocViewDocument extends JViewLegacy
     //Get the possible extra class name.
     $this->pageclass_sfx = htmlspecialchars($this->item->params->get('pageclass_sfx'));
 
-    //Get the user object and the current url, (needed in the document edit layout).
+    // Gets the user object and the current url, (needed in the document edit layout).
     $this->user = JFactory::getUser();
     $this->uri = JUri::getInstance();
 
-    //Increment the hits for this document.
+    // Increments the hits for this document.
     $model = $this->getModel();
     $model->hit();
 
@@ -63,9 +72,13 @@ class OkeydocViewDocument extends JViewLegacy
   }
 
 
+  /**
+   * Includes possible css and Javascript files.
+   *
+   * @return  void
+   */
   protected function setDocument() 
   {
-    //Include css files (if needed).
     $doc = JFactory::getDocument();
     $doc->addStyleSheet(JURI::base().'components/com_okeydoc/css/okeydoc.css');
   }

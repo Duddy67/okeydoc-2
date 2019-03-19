@@ -1,11 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
+
 
 /**
  * Legacy routing rules class from com_okeydoc
@@ -234,7 +235,7 @@ class OkeydocRouterRulesLegacy implements JComponentRouterRulesInterface
   {
     $total = count($segments);
 
-    //Converts hyphen into colon.
+    // Converts hyphen into colon.
     for($i = 0; $i < $total; $i++) {
       $segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
     }

@@ -1,14 +1,14 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
 JHtml::_('behavior.framework');
 
-//Create shortcut for params.
+// Create shortcut for params.
 $params = $this->item->params;
 ?>
 
@@ -33,7 +33,7 @@ $params = $this->item->params;
   <?php endif; ?>
 
   <?php if(($params->get('show_readmore') && !empty($this->item->full_text)) || $params->get('show_download')) :
-	  if(!$params->get('access-view')) { //Redirect the user to the login page.
+	  if(!$params->get('access-view')) { // Redirects the user to the login page.
 	    $menu = JFactory::getApplication()->getMenu();
 	    $active = $menu->getActive();
 	    $itemId = $active->id;
@@ -41,7 +41,7 @@ $params = $this->item->params;
 	    $comUserLink->setVar('return', base64_encode(JRoute::_(OkeydocHelperRoute::getDocumentRoute($this->item->slug, $this->item->catid, $this->item->language), false)));
 	  }
 
-          //Computes the Readmore and Download links.
+          // Computes the Readmore and Download links.
 	  if($params->get('show_readmore') && !empty($this->item->full_text)) {     
 	    if($params->get('access-view')) {
 	      $link = JRoute::_(OkeydocHelperRoute::getDocumentRoute($this->item->slug, $this->item->catid, $this->item->language));

@@ -1,11 +1,11 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.keepalive');
@@ -92,7 +92,7 @@ Joomla.submitbutton = function(task)
 		  </div>
 		<?php echo $this->form->getControlGroup('file_name'); ?>
 
-		  <?php //Toggle button which hide/show the link method fields to replace the original file. ?>
+		  <?php // Toggle button which hide/show the link method fields to replace the original file. ?>
 		  <span class="form-space"></span>
 		  <a href="#" id="switch_replace" style="margin-bottom:10px;" class="btn">
 		    <span id="replace-title"><?php echo JText::_('COM_OKEYDOC_REPLACE'); ?></span>
@@ -147,9 +147,9 @@ Joomla.submitbutton = function(task)
 	    </div>
 
 	    <?php
-		  //Hidden input flag to check if a file replacement is required.
+		  // Hidden input flag to check if a file replacement is required.
 		  echo $this->form->getInput('replace_file'); 
-		  //In case of file replacement the current file location will be needed.
+		  // In case of file replacement the current file location will be needed.
 		  $this->form->setValue('current_file_location', null, $this->item->file_location);
 		  echo $this->form->getInput('current_file_location'); 
 	      ?>
@@ -166,8 +166,6 @@ Joomla.submitbutton = function(task)
 </div>
 
 <?php
-
 $doc = JFactory::getDocument();
-//Load the jQuery script(s).
 $doc->addScript(JURI::base().'administrator/components/com_okeydoc/js/document.js');
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
@@ -19,10 +19,10 @@ $uri = $displayData['uri'];
   <?php if($canEdit) : ?>
     <div class="btn-group pull-right">
       <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-cog"></span><span class="caret"></span></a>
-      <?php // Document the actions class is deprecated. Use dropdown-menu instead. ?>
+      <?php // Note: the actions class is deprecated. Use dropdown-menu instead. ?>
       <ul class="dropdown-menu">
 	<?php if($canEdit) :
-	    //First check if the document is checked out by a different user
+	    // First check if the document is checked out by a different user
 	    if($item->checked_out > 0 && $item->checked_out != $user->id) :
 	      $checkoutUser = JFactory::getUser($item->checked_out);
 	      $date = JHtml::_('date', $item->checked_out_time);
@@ -34,7 +34,7 @@ $uri = $displayData['uri'];
 		   <?php echo JText::_('JLIB_HTML_CHECKED_OUT'); ?></span></a>
 	      </li>
 	   <?php else : 
-	      //Build the edit link and display it. 
+	      // Builds the edit link and display it. 
 	      $url = 'index.php?option=com_okeydoc&task=document.edit&d_id='.$item->id.'&return='.base64_encode($uri);
 	      ?>
 	      <li class="edit-icon"><a href="<?php echo JRoute::_($url); ?>"><span class="icon-edit"></span>

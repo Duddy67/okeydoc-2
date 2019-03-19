@@ -209,13 +209,21 @@ class OkeydocModelDocument extends JModelAdmin
     $db = JFactory::getDbo();
     $query = $db->getQuery(true);
 
-    $query->select('file_size, file_icon, downloads, version, archived')
+    $query->select('file_size, file_type, file_icon, downloads, version, archived')
           ->from('#__okeydoc_archive')
           ->where('doc_id='.(int)$pk)
           ->order('version ASC');
     $db->setQuery($query);
+    $archives = $db->loadAssocList();
 
-    return $db->loadAssocList();
+    // Adds the conversion size data for files uploaded on the server.
+    foreach($archives as $key => $archive) {
+      if($archive['file_size'] != 'unknown') {
+	$archives[$key]['conversion'] = $this->byteConverter($archive['file_size']);
+      }
+    }
+
+    return $archives;
   }
 
 
@@ -238,7 +246,8 @@ class OkeydocModelDocument extends JModelAdmin
     // Computes the file version number against the number of archives already present in
     // the table.
     $query->select('COUNT(*)')
-          ->from('#__okeydoc_archive');
+          ->from('#__okeydoc_archive')
+          ->where('doc_id='.(int)$pk);
     $db->setQuery($query);
     $version = (int)$db->loadResult() + 1;
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
@@ -39,10 +39,10 @@ class OkeydocModelForm extends OkeydocModelDocument
     $pk = $app->input->getInt('d_id');
     $this->setState('document.id', $pk);
 
-    //Retrieve a possible category id from the url query.
+    // Retrieve a possible category id from the url query.
     $this->setState('document.catid', $app->input->getInt('catid'));
 
-    //Retrieve a possible encoded return url from the url query.
+    // Retrieve a possible encoded return url from the url query.
     $return = $app->input->get('return', null, 'base64');
     $this->setState('return_page', base64_decode($return));
 
@@ -69,7 +69,7 @@ class OkeydocModelForm extends OkeydocModelDocument
     $table = $this->getTable();
 
     // Attempt to load the row.
-    //Documents: If it's a new item, load function just return true.
+    // Note: If it's a new item, load function just return true.
     $return = $table->load($itemId);
 
     // Check for a table object error.
@@ -78,15 +78,15 @@ class OkeydocModelForm extends OkeydocModelDocument
       return false;
     }
 
-    //Get the fields of the table as an array
+    // Gets the fields of the table as an array
     $properties = $table->getProperties(1);
-    //then convert the array into an object.
+    // then convert the array into an object.
     $item = JArrayHelper::toObject($properties, 'JObject');
 
-    //Document: params fields are missing on purpose in the xml form as
-    //params cannot be set on frontend.
-    //All of the document items created on frontend has an empty
-    //params value.
+    // Note: params fields are missing on purpose in the xml form as
+    // params cannot be set on frontend.
+    // All of the document items created on frontend has an empty
+    // params value.
 
     // Convert params field to Registry.
     $item->params = new JRegistry;
@@ -114,21 +114,23 @@ class OkeydocModelForm extends OkeydocModelDocument
       // Check edit state permission.
       $item->params->set('access-change', $user->authorise('core.edit.state', $asset));
 
-      //Set up the text to display in the editor.
+      // Sets up the text to display in the editor.
       $item->documenttext = $item->intro_text;
       if(!empty($item->full_text)) {
 	$item->documenttext .= '<hr id="system-readmore" />'.$item->full_text;
       }
     }
-    else { // New item.
+    // New item.
+    else { 
       $catId = (int) $this->getState('document.catid');
 
       if($catId) {
-	//Check the change access in this specific category.
+	// Checks the change access in this specific category.
 	$item->params->set('access-change', $user->authorise('core.edit.state', 'com_okeydoc.category.'.$catId));
 	$item->catid = $catId;
       }
-      else { //Check the general change access.
+      // Checks the general change access.
+      else { 
 	$item->params->set('access-change', $user->authorise('core.edit.state', 'com_okeydoc'));
       }
     }
@@ -138,7 +140,7 @@ class OkeydocModelForm extends OkeydocModelDocument
     $registry->loadString($item->metadata);
     $item->metadata = $registry->toArray();
 
-    //Get the document tags.
+    // Gets the document tags.
     $item->tags = new JHelperTags;
     $item->tags->getTagIds($item->id, 'com_okeydoc.document');
     $item->metadata['tags'] = $item->tags;
@@ -158,6 +160,7 @@ class OkeydocModelForm extends OkeydocModelDocument
   {
     return base64_encode($this->getState('return_page'));
   }
+
 
   /**
    * Method to save the form data.

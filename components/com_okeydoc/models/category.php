@@ -1,13 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
 
-require_once JPATH_COMPONENT_SITE.'/helpers/query.php';
 
 /**
  * Okey DOC 2 Component Model
@@ -102,22 +101,22 @@ class OkeydocModelCategory extends JModelList
   {
     $app = JFactory::getApplication('site');
 
-    //Get and set the current category id.
+    // Gets and set the current category id.
     $pk = $app->input->getInt('id');
     $this->setState('category.id', $pk);
 
-    //getParams function return global parameters overrided by the menu parameters (if any).
-    //Document: Some specific parameters of this menu are not returned.
+    // getParams function return global parameters overrided by the menu parameters (if any).
+    // Note: Some specific parameters of this menu are not returned.
     $params = $app->getParams();
 
     $menuParams = new JRegistry;
 
-    //Get the menu with its specific parameters.
+    // Gets the menu with its specific parameters.
     if($menu = $app->getMenu()->getActive()) {
       $menuParams->loadString($menu->params);
     }
 
-    //Merge Global and Menu Item params into a new object.
+    // Merges Global and Menu Item params into a new object.
     $mergedParams = clone $menuParams;
     $mergedParams->merge($params);
 
@@ -126,45 +125,46 @@ class OkeydocModelCategory extends JModelList
 
     // process show_noauth parameter
 
-    //The user is not allowed to see the registered documents unless he has the proper view permissions.
+    // The user is not allowed to see the registered documents unless he has the proper view permissions.
     if(!$params->get('show_noauth')) {
-      //Set the access filter to true. This way the SQL query checks against the user
-      //view permissions and fetchs only the documents this user is allowed to see.
+      // Sets the access filter to true. This way the SQL query checks against the user
+      // view permissions and fetchs only the documents this user is allowed to see.
       $this->setState('filter.access', true);
     }
-    //The user is allowed to see any of the registred documents (ie: intro_text as a teaser). 
+    // The user is allowed to see any of the registred documents (ie: intro_text as a teaser). 
     else {
-      //The user is allowed to see all the documents or some of them.
-      //All of the documents are returned and it's up to thelayout to 
-      //deal with the access (ie: redirect the user to login form when Read more
-      //button is clicked).
+      // The user is allowed to see all the documents or some of them.
+      // All of the documents are returned and it's up to thelayout to 
+      // deal with the access (ie: redirect the user to login form when Read more
+      // button is clicked).
       $this->setState('filter.access', false);
     }
 
-    // Set limit for query. If list, use parameter. If blog, add blog parameters for limit.
-    //Important: The pagination limit box must be hidden to use the limit value based upon the layout.
+    // Sets limit for query. If list, use parameter. If blog, add blog parameters for limit.
+    // Important: The pagination limit box must be hidden to use the limit value based upon the layout.
     if(!$params->get('show_pagination_limit') && (($app->input->get('layout') === 'blog') || $params->get('layout_type') === 'blog')) {
       $limit = $params->get('num_leading_documents') + $params->get('num_intro_documents') + $params->get('num_links');
     }
-    else { // list layout or blog layout with the pagination limit box shown.
-      //Get the number of songs to display per page.
+    // list layout or blog layout with the pagination limit box shown.
+    else { 
+      // Gets the number of songs to display per page.
       $limit = $params->get('display_num', 10);
 
       if($params->get('show_pagination_limit')) {
-	//Gets the limit value from the pagination limit box.
+	// Gets the limit value from the pagination limit box.
 	$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $limit, 'uint');
       }
     }
 
     $this->setState('list.limit', $limit);
 
-    //Get the limitstart variable (used for the pagination) from the form variable.
+    // Gets the limitstart variable (used for the pagination) from the form variable.
     $limitstart = $app->input->get('limitstart', 0, 'uint');
     $this->setState('list.start', $limitstart);
 
     // Optional filter text
     $this->setState('list.filter_search', $app->input->getString('filter_search'));
-    //Get the value of the select list and load it in the session.
+    // Gets the value of the select list and load it in the session.
     $this->setState('list.filter_ordering', $app->input->getString('filter_ordering'));
 
     $user = JFactory::getUser();
@@ -174,7 +174,7 @@ class OkeydocModelCategory extends JModelList
       $asset .= '.category.'.$pk;
     }
 
-    //Check against the category permissions.
+    // Checks against the category permissions.
     if((!$user->authorise('core.edit.state', $asset)) && (!$user->authorise('core.edit', $asset))) {
       // limit to published for people who can't edit or edit.state.
       $this->setState('filter.published', 1);
@@ -183,7 +183,7 @@ class OkeydocModelCategory extends JModelList
       $this->setState('filter.publish_date', true);
     }
     else {
-      //User can access published, unpublished and archived documents.
+      // User can access published, unpublished and archived documents.
       $this->setState('filter.published', array(0, 1, 2));
     }
 
@@ -202,7 +202,7 @@ class OkeydocModelCategory extends JModelList
     $items = parent::getItems();
     $input = JFactory::getApplication()->input;
 
-    //Get some user data.
+    // Gets some user data.
     $user = JFactory::getUser();
     $userId = $user->get('id');
     $guest = $user->get('guest');
@@ -210,11 +210,11 @@ class OkeydocModelCategory extends JModelList
 
     // Convert the params field into an object, saving original in _params
     foreach($items as $item) {
-      //Get the document parameters only.
+      // Gets the document parameters only.
       $documentParams = new JRegistry;
       $documentParams->loadString($item->params);
-      //Set the params attribute, eg: the merged global and menu parameters set
-      //in the populateState function.
+      // Sets the params attribute, eg: the merged global and menu parameters set
+      // in the populateState function.
       $item->params = clone $this->getState('params');
 
       // For Blog layout, document params override menu item params only if menu param='use_document'.
@@ -246,9 +246,10 @@ class OkeydocModelCategory extends JModelList
 	  $item->params->merge($documentParams);
 	}
       }
-      else { //Default layout (list).
+      // Default layout (list).
+      else { 
 	// Merge all of the document params.
-	//Document: Document params (if they are defined) override global/menu params.
+	// Note: Document params (if they are defined) override global/menu params.
 	$item->params->merge($documentParams);
       }
 
@@ -271,22 +272,23 @@ class OkeydocModelCategory extends JModelList
       }
 
       $access = $this->getState('filter.access');
-      //Set the access view parameter.
+      // Sets the access view parameter.
       if($access) {
 	// If the access filter has been set, we already have only the documents this user can view.
 	$item->params->set('access-view', true);
       }
       else { // If no access filter is set, the layout takes some responsibility for display of limited information.
 	if($item->catid == 0 || $item->category_access === null) {
-	  //In case the document is not linked to a category, we just check permissions against the document access.
+	  // In case the document is not linked to a category, we just check permissions against the document access.
 	  $item->params->set('access-view', in_array($item->access, $groups));
 	}
-	else { //Check the user permissions against the document access as well as the category access.
+	// Check the user permissions against the document access as well as the category access.
+	else { 
 	  $item->params->set('access-view', in_array($item->access, $groups) && in_array($item->category_access, $groups));
 	}
       }
 
-      //Set the type of date to display, (default layout only).
+      // Sets the type of date to display, (default layout only).
       if($this->getState('params')->get('layout_type') != 'blog'
 	  && $this->getState('params')->get('list_show_date')
 	  && $this->getState('params')->get('order_date')) {
@@ -299,7 +301,7 @@ class OkeydocModelCategory extends JModelList
 		  $item->displayDate = ($item->publish_up == 0) ? $item->created : $item->publish_up;
 		  break;
 
-	  default: //created
+	  default: // created
 		  $item->displayDate = $item->created;
 	}
       }
@@ -335,7 +337,7 @@ class OkeydocModelCategory extends JModelList
 	                           'd.checked_out,d.checked_out_time,d.created,d.created_by,d.access,d.params,d.metadata,'.
 				   'd.metakey,d.metadesc,d.hits,d.publish_up,d.publish_down,d.language,d.modified,d.modified_by'))
 	  ->from($db->quoteName('#__okeydoc_document').' AS d')
-	  //Display documents of the current category.
+	  // Displays documents of the current category.
 	  ->where('d.catid='.(int)$this->getState('category.id'));
 
     // Join on category table.
@@ -363,17 +365,17 @@ class OkeydocModelCategory extends JModelList
     // Filter by state
     $published = $this->getState('filter.published');
     if(is_numeric($published)) {
-      //User is only allowed to see published documents.
+      // User is only allowed to see published documents.
       $query->where('d.published='.(int)$published);
     }
     elseif(is_array($published)) {
-      //User is allowed to see documents with different states.
+      // User is allowed to see documents with different states.
       JArrayHelper::toInteger($published);
       $published = implode(',', $published);
       $query->where('d.published IN ('.$published.')');
     }
 
-    //Do not show expired documents to users who can't edit or edit.state.
+    // Do not show expired documents to users who can't edit or edit.state.
     if($this->getState('filter.publish_date')) {
       // Filter by start and end dates.
       $nullDate = $db->quote($db->getNullDate());
@@ -390,24 +392,24 @@ class OkeydocModelCategory extends JModelList
 
     // Filter by search in title
     $search = $this->getState('list.filter_search');
-    //Get the field to search by.
+    // Gets the field to search by.
     $field = $this->getState('params')->get('filter_field');
     if(!empty($search)) {
       $search = $db->quote('%'.$db->escape($search, true).'%');
       $query->where('(d.'.$field.' LIKE '.$search.')');
     }
 
-    //Get the documents ordering by default set in the menu options. (Document: sec stands for secondary). 
+    // Gets the documents ordering by default set in the menu options. (Document: sec stands for secondary). 
     $documentOrderBy = $this->getState('params')->get('orderby_sec', 'rdate');
-    //If documents are sorted by date (ie: date, rdate), order_date defines
-    //which type of date should be used (ie: created, modified or publish_up).
+    // If documents are sorted by date (ie: date, rdate), order_date defines
+    // which type of date should be used (ie: created, modified or publish_up).
     $documentOrderDate = $this->getState('params')->get('order_date');
-    //Get the field to use in the ORDER BY clause according to the orderby_sec option.
+    // Gets the field to use in the ORDER BY clause according to the orderby_sec option.
     $orderBy = OkeydocHelperQuery::orderbySecondary($documentOrderBy, $documentOrderDate);
 
-    //Filter by order (eg: the select list set by the end user).
+    // Filter by order (eg: the select list set by the end user).
     $filterOrdering = $this->getState('list.filter_ordering');
-    //If the end user has define an order, we override the ordering by default.
+    // If the end user has define an order, we override the ordering by default.
     if(!empty($filterOrdering)) {
       $orderBy = OkeydocHelperQuery::orderbySecondary($filterOrdering, $documentOrderDate);
     }
@@ -542,6 +544,7 @@ class OkeydocModelCategory extends JModelList
     return $this->_children;
   }
 
+
   /**
    * Increment the hit counter for the category.
    *
@@ -591,12 +594,10 @@ class OkeydocModelCategory extends JModelList
 	  ->where('title LIKE '.$db->Quote($search.'%'))
 	  ->order('title DESC');
     $db->setQuery($query);
-    //Requested to get the JQuery autocomplete working properly.
+    // Requested to get the JQuery autocomplete working properly.
     $results['suggestions'] = $db->loadAssocList();
 
     return $results;
   }
 }
-
-
 
