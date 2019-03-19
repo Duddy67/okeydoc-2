@@ -1,15 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-
-defined( '_JEXEC' ) or die; // No direct access
- 
-jimport( 'joomla.application.component.view');
-require_once JPATH_COMPONENT.'/helpers/okeydoc.php';
+// No direct access
+defined( '_JEXEC' ) or die; 
  
 
 class OkeydocViewDocuments extends JViewLegacy
@@ -18,7 +15,17 @@ class OkeydocViewDocuments extends JViewLegacy
   protected $state;
   protected $pagination;
 
-  //Display the view.
+
+  /**
+   * Execute and display a template script.
+   *
+   * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+   *
+   * @return  mixed  A string if successful, otherwise an Error object.
+   *
+   * @see     \JViewLegacy::loadTemplate()
+   * @since   3.0
+   */
   public function display($tpl = null)
   {
     $this->items = $this->get('Items');
@@ -27,34 +34,38 @@ class OkeydocViewDocuments extends JViewLegacy
     $this->filterForm = $this->get('FilterForm');
     $this->activeFilters = $this->get('ActiveFilters');
 
-    //Check for errors.
+    // Checks for errors.
     if(count($errors = $this->get('Errors'))) {
       JFactory::getApplication()->enqueueMessage($errors, 'error');
       return false;
     }
 
-    //Display the tool bar.
     $this->addToolBar();
-
     $this->setDocument();
     $this->sidebar = JHtmlSidebar::render();
 
-    //Display the template.
+    // Displays the template.
     parent::display($tpl);
   }
 
 
-  //Build the toolbar.
+  /**
+   * Add the page title and toolbar.
+   *
+   * @return  void
+   *
+   * @since   1.6
+   */
   protected function addToolBar() 
   {
-    //Display the view title and the icon.
+    // Displays the view title and the icon.
     JToolBarHelper::title(JText::_('COM_OKEYDOC_DOCUMENTS_TITLE'), 'stack');
 
-    //Get the allowed actions list
+    // Gets the allowed actions list
     $canDo = OkeydocHelper::getActions();
     $user = JFactory::getUser();
 
-    //The user is allowed to create or is able to create in one of the component categories.
+    // The user is allowed to create or is able to create in one of the component categories.
     if($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_okeydoc', 'core.create'))) > 0) {
       JToolBarHelper::addNew('document.add', 'JTOOLBAR_NEW');
     }
@@ -75,7 +86,7 @@ class OkeydocViewDocuments extends JViewLegacy
       JToolBarHelper::trash('documents.trash','JTOOLBAR_TRASH');
     }
 
-    //Check for delete permission.
+    // Checks for delete permission.
     if($canDo->get('core.delete') || count($user->getAuthorisedCategories('com_okeydoc', 'core.delete'))) {
       JToolBarHelper::divider();
       JToolBarHelper::deleteList('', 'documents.delete', 'JTOOLBAR_DELETE');
@@ -88,11 +99,15 @@ class OkeydocViewDocuments extends JViewLegacy
   }
 
 
+  /**
+   * Includes possible css and Javascript files.
+   *
+   * @return  void
+   */
   protected function setDocument() 
   {
-    //Include css file (if needed).
-    //$doc = JFactory::getDocument();
-    //$doc->addStyleSheet(JURI::base().'components/com_okeydoc/okeydoc.css');
+    $doc = JFactory::getDocument();
+    $doc->addStyleSheet(JURI::base().'components/com_okeydoc/okeydoc.css');
   }
 }
 

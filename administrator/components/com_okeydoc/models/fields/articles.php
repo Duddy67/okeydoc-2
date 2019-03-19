@@ -1,40 +1,40 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c)2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c)2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  * @contact lucas.sanner@gmail.com
  */
 
 defined('_JEXEC') or die;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
-// import the list field type
-jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
 
-
-//Field which allow the users to link a document with one or several articles.
-//The articles previously selected (if any) are displayed within the input field whereas
-//the drop down list displays the rest of the selectable articles.
-
+/**
+ * Field which allow the users to link a document with one or several articles.
+ * The articles previously selected (if any) are displayed within the input field whereas
+ * the drop down list displays the rest of the selectable articles.
+ */
 class JFormFieldArticles extends JFormFieldList
 {
-
   protected $type = 'articles';
 
+
+  /**
+   * Method to get the field input for a article field.
+   *
+   * @return  string  The field input.
+   */
   protected function getInput()
   {
-    //Get the item id directly from the form loaded with data.
+    // Gets the item id directly from the form loaded with data.
     $itemId = $this->form->getValue('id');
 
     if($itemId) {
-      // Get the current user object.
+      // Gets the current user object.
       $user = JFactory::getUser();
       $groups = implode(',', $user->getAuthorisedViewLevels());
 
-      //Get the article ids previously selected.
+      // Gets the article ids previously selected.
       $db = JFactory::getDbo();
       $query = $db->getQuery(true);
       $query->select('id')
@@ -45,8 +45,8 @@ class JFormFieldArticles extends JFormFieldList
       $db->setQuery($query);
       $selected = $db->loadColumn();
 
-      //Assign the id array to the value attribute to get the selected articles
-      //displayed in the input field.
+      // Assigns the id array to the value attribute to get the selected articles
+      // displayed in the input field.
       $this->value = $selected;
     }
 
@@ -56,11 +56,16 @@ class JFormFieldArticles extends JFormFieldList
   }
 
 
+  /**
+   * Method to get a list of articles.
+   *
+   * @return  array  The field option objects.
+   */
   protected function getOptions()
   {
     $options = array();
       
-    // Get the current user object.
+    // Gets the current user object.
     $user = JFactory::getUser();
     $groups = implode(',', $user->getAuthorisedViewLevels());
     $userId = $user->get('id');
@@ -73,17 +78,17 @@ class JFormFieldArticles extends JFormFieldList
     $db->setQuery($query);
     $articles = $db->loadObjectList();
 
-    //Check for edit permissions.
+    // Checks for edit permissions.
     foreach($articles as $i => $article)
     {
       $accessEdit = false;
-      $asset = 'com_content.article.'.$article->value; //Note: value = id.
+      $asset = 'com_content.article.'.$article->value; // Note: value = id.
 
-      // Check general edit permission first.
+      // Checks general edit permission first.
       if($user->authorise('core.edit', $asset)) {
 	$accessEdit = true;
       }
-      // Now check if edit.own is available.
+      // Now checks if edit.own is available.
       elseif(!empty($userId) && $user->authorise('core.edit.own', $asset)) {
 	// Check for a valid user and that they are the owner.
 	if($userId == $article->created_by) {
@@ -91,7 +96,7 @@ class JFormFieldArticles extends JFormFieldList
 	}
       }
 
-      //Unauthorised articles are removed from the array.
+      // Unauthorised articles are removed from the array.
       if(!$accessEdit) {
 	unset($articles[$i]);
       }
@@ -103,6 +108,4 @@ class JFormFieldArticles extends JFormFieldList
     return $options;
   }
 }
-
-
 

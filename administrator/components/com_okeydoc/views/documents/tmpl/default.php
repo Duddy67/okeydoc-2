@@ -1,15 +1,17 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-defined( '_JEXEC' ) or die; // No direct access
+// No direct access
+defined( '_JEXEC' ) or die; 
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', 'select');
+
 
 $user = JFactory::getUser();
 $userId = $user->get('id');

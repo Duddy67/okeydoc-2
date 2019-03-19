@@ -8,7 +8,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla table and filesystem libraries.
+// Imports Joomla's table and filesystem libraries.
 jimport('joomla.database.table');
 jimport('joomla.filesystem.file');
  
@@ -54,7 +54,7 @@ class OkeydocTableDocument extends JTable
   public function bind($array, $ignore = '')
   {
     if(isset($array['params']) && is_array($array['params'])) {
-      // Convert the params field to a string.
+      // Converts the params field to a string.
       $registry = new JRegistry;
       $registry->loadArray($array['params']);
       $array['params'] = (string) $registry;
@@ -66,7 +66,7 @@ class OkeydocTableDocument extends JTable
       $array['metadata'] = (string) $registry;
     }
 
-    // Search for the {readmore} tag and split the text up accordingly.
+    // Searches for the {readmore} tag and split the text up accordingly.
     if(isset($array['documenttext'])) {
       $pattern = '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
       $tagPos = preg_match($pattern, $array['documenttext']);
@@ -76,8 +76,8 @@ class OkeydocTableDocument extends JTable
 	$this->full_text = '';
       }
       else {
-	//Split documenttext field data in 2 parts with the "readmore" tag as a separator.
-	//Document: The "readmore" tag is not included in either part.
+	// Splits documenttext field data in 2 parts with the "readmore" tag as a separator.
+	// Note: The "readmore" tag is not included in either part.
 	list($this->intro_text, $this->full_text) = preg_split($pattern, $array['documenttext'], 2);
       }
     }
@@ -103,7 +103,7 @@ class OkeydocTableDocument extends JTable
    */
   public function store($updateNulls = false)
   {
-    //Gets the current date and time (UTC).
+    // Gets the current date and time (UTC).
     $now = JFactory::getDate()->toSql();
     $user = JFactory::getUser();
 
@@ -123,9 +123,9 @@ class OkeydocTableDocument extends JTable
       }
     }
 
-    // Set the alias of the document.
+    // Sets the alias of the document.
     
-    // Create a sanitized alias, (see stringURLSafe function for details).
+    // Creates a sanitized alias, (see stringURLSafe function for details).
     $this->alias = JFilterOutput::stringURLSafe($this->alias);
     // In case no alias has been defined, create a sanitized alias from the title field.
     if(empty($this->alias)) {
@@ -140,9 +140,9 @@ class OkeydocTableDocument extends JTable
       return false;
     }
 
+    // In case of archiving the data of the current file has to be saved before being updated.
     if($this->jform['archive_file'] == 1) {
       $archive = array();
-      //
       $archive['file_name'] = $this->file_name;
       $archive['file_type'] = $this->file_type;
       $archive['file_size'] = $this->file_size;
@@ -159,8 +159,9 @@ class OkeydocTableDocument extends JTable
 
     if($this->jform['archive_file'] == 1) {
       $model = JModelLegacy::getInstance('document', 'OkeydocModel');
+      // Saves the data of the previous file version.
       $model->archiveFile($this->id, $archive);
-      // Reset the downloads for the new file version.
+      // Resets the downloads for the brand new file version.
       $this->downloads = 0;
     }
 
@@ -181,9 +182,9 @@ class OkeydocTableDocument extends JTable
 
     // In case of replacement without file archiving, the current file has to be deleted from the server.
     if($jform['replace_file'] == 1 && $jform['current_file_location'] == 'server' && !$jform['archive_file']) {
-      //Warning: Don't ever use the JFile delete function cause if a problem occurs with
-      //the file, the returned value is undefined (nor boolean or whatever). 
-      //Stick to the unlink PHP function which is safer.
+      // Warning: Don't ever use the JFile delete function cause if a problem occurs with
+      // the file, the returned value is undefined (nor boolean or whatever). 
+      // Sticking to the unlink() PHP function which is safer.
       if(!unlink(JPATH_ROOT.'/media/com_okeydoc/files/'.$this->file_name)) {
 	$data->setError(JText::sprintf('COM_OKEYDOC_FILE_COULD_NOT_BE_DELETED', $this->file_name));
 	return false;
@@ -193,16 +194,16 @@ class OkeydocTableDocument extends JTable
     }
 
     if((!$this->id || $jform['replace_file'] == 1) && $jform['file_location'] == 'server') {
-      //Uploads the file on the server.
+      // Uploads the file on the server.
       $file = $this->uploadFile();
 
-      //Checks for error.
+      // Checks for error.
       if(!empty($file['error'])) {
 	$this->setError(JText::_($file['error']));
 	return false;
       }
 
-      //Sets the file variables.
+      // Sets the file variables.
       $this->file_name = $file['file_name'];
       $this->file_type = $file['file_type'];
       $this->file_size = $file['file_size'];
@@ -210,9 +211,9 @@ class OkeydocTableDocument extends JTable
       $this->file_icon = $file['file_icon'];
     }
     elseif((!$this->id || $jform['replace_file'] == 1) && $jform['file_location'] == 'url') {
-      //Retrieve the file name from its URL
+      // Retrieves the file name from its URL
       $fileName = basename($jform['file_url']);
-      //Get the file extension and convert it to lowercase.
+      // Gets the file extension and convert it to lowercase.
       $ext = strtolower(JFile::getExt($fileName));
       $fileIcon = 'generic.gif';
       $fileSettings = $this->getFileSettings();
@@ -221,11 +222,11 @@ class OkeydocTableDocument extends JTable
 	$fileIcon = $ext.'.gif';
       }
 
-      //Sets the file variables.
+      // Sets the file variables.
       $this->file_name = $fileName;
       //TODO: Ensure that "application" is always used regardless of the extension.
       $this->file_type = 'application/'.$ext;
-      //As the file is not on the server its size is unknown.
+      // As the file is not on the server its size is unknown.
       $this->file_size = 'unknown';
       $this->file_path = $jform['file_url'];
       $this->file_icon = $fileIcon;
@@ -269,7 +270,7 @@ class OkeydocTableDocument extends JTable
    * @see JTable::_getAssetParentId()
    */
 
-  //Document: The component categories ACL override the items ACL, (whenever the ACL of a
+  //Note: The component categories ACL override the items ACL, (whenever the ACL of a
   //      category is modified, changes are spread into the items ACL).
   //      This is the default com_content behavior. see: libraries/legacy/table/content.php
   protected function _getAssetParentId(JTable $table = null, $id = null)
@@ -301,5 +302,4 @@ class OkeydocTableDocument extends JTable
     }
   }
 }
-
 

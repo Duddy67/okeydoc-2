@@ -1,41 +1,39 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c)2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c)2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
- * @contact lucas.sanner@gmail.com
  */
 
 defined('_JEXEC') or die;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
-// import the list field type
-jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
 
-
-//Field which allow the users to link a document with one or several content categories.
-//The categories previously selected (if any) are displayed within the input field whereas
-//the drop down list displays the rest of the selectable categories.
-
-
+/**
+ *Field which allow the users to link a document with one or several content categories.
+ *The categories previously selected (if any) are displayed within the input field whereas
+ *the drop down list displays the rest of the selectable categories.
+ */
 class JFormFieldContentcategories extends JFormFieldList
 {
   protected $type = 'contentcategories';
 
 
+  /**
+   * Method to get the field input for a category field.
+   *
+   * @return  string  The field input.
+   */
   protected function getInput()
   {
-    //Get the item id directly from the form loaded with data.
+    // Gets the item id directly from the form loaded with data.
     $itemId = $this->form->getValue('id');
 
     if($itemId) {
-      // Get the current user object.
+      // Gets the current user object.
       $user = JFactory::getUser();
       $groups = implode(',', $user->getAuthorisedViewLevels());
 
-      //Get the content category ids previously selected.
+      // Gets the content category ids previously selected.
       $db = JFactory::getDbo();
       $query = $db->getQuery(true);
       $query->select('id')
@@ -46,8 +44,8 @@ class JFormFieldContentcategories extends JFormFieldList
       $db->setQuery($query);
       $selected = $db->loadColumn();
 
-      //Assign the id array to the value attribute to get the selected categories
-      //displayed in the input field.
+      // Assign the id array to the value attribute to get the selected categories
+      // displayed in the input field.
       $this->value = $selected;
     }
 
@@ -57,11 +55,16 @@ class JFormFieldContentcategories extends JFormFieldList
   }
 
 
+  /**
+   * Method to get a list of categories.
+   *
+   * @return  array  The field option objects.
+   */
   protected function getOptions()
   {
     $options = array();
       
-    // Get the current user object.
+    // Gets the current user object.
     $user = JFactory::getUser();
     $groups = implode(',', $user->getAuthorisedViewLevels());
     $userId = $user->get('id');
@@ -74,7 +77,7 @@ class JFormFieldContentcategories extends JFormFieldList
     $db->setQuery($query);
     $categories = $db->loadObjectList();
 
-    //Check for edit permissions.
+    // Checks for edit permissions.
     foreach($categories as $i => $category)
     {
       $accessEdit = false;
@@ -92,7 +95,7 @@ class JFormFieldContentcategories extends JFormFieldList
 	}
       }
 
-      //Unauthorised categories are removed from the array.
+      // Unauthorised categories are removed from the array.
       if(!$accessEdit) {
 	unset($categories[$i]);
       }
@@ -104,5 +107,4 @@ class JFormFieldContentcategories extends JFormFieldList
     return $options;
   }
 }
-
 

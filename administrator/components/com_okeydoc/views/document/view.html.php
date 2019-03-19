@@ -1,14 +1,12 @@
 <?php
 /**
  * @package Okey DOC 2
- * @copyright Copyright (c) 2017 - 2018 Lucas Sanner
+ * @copyright Copyright (c) 2015 - 2019 Lucas Sanner
  * @license GNU General Public License version 3, or later
  */
 
-defined( '_JEXEC' ) or die; // No direct access
- 
-
-require_once JPATH_COMPONENT.'/helpers/okeydoc.php';
+// No direct access
+defined( '_JEXEC' ) or die; 
  
 
 class OkeydocViewDocument extends JViewLegacy
@@ -19,7 +17,17 @@ class OkeydocViewDocument extends JViewLegacy
   protected $archives;
   protected $extDocLinkings;
 
-  //Display the view.
+
+  /**
+   * Execute and display a template script.
+   *
+   * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+   *
+   * @return  mixed  A string if successful, otherwise an Error object.
+   *
+   * @see     \JViewLegacy::loadTemplate()
+   * @since   3.0
+   */
   public function display($tpl = null)
   {
     $this->item = $this->get('Item');
@@ -28,40 +36,45 @@ class OkeydocViewDocument extends JViewLegacy
     $this->archives = $this->getModel()->getArchives();
     $this->extDocLinkings = $this->getModel()->getExternalDocumentLinkings();
 
-    //Check for errors.
+    // Checks for errors.
     if(count($errors = $this->get('Errors'))) {
       JFactory::getApplication()->enqueueMessage($errors, 'error');
       return false;
     }
 
-    //Display the toolbar.
     $this->addToolBar();
+    //$this->setDocument();
 
-    $this->setDocument();
-
-    //Display the template.
+    // Displays the template.
     parent::display($tpl);
   }
 
 
+  /**
+   * Add the page title and toolbar.
+   *
+   * @return  void
+   *
+   * @since   1.6
+   */
   protected function addToolBar() 
   {
-    //Make main menu inactive.
+    // Makes main menu inactive.
     JFactory::getApplication()->input->set('hidemainmenu', true);
 
     $user = JFactory::getUser();
     $userId = $user->get('id');
 
-    //Get the allowed actions list
+    // Gets the allowed actions list
     $canDo = OkeydocHelper::getActions($this->state->get('filter.category_id'));
     $isNew = $this->item->id == 0;
     $checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
-    //Display the view title (according to the user action) and the icon.
+    // Displays the view title (according to the user action) and the icon.
     JToolBarHelper::title($isNew ? JText::_('COM_OKEYDOC_NEW_DOCUMENT') : JText::_('COM_OKEYDOC_EDIT_DOCUMENT'), 'pencil-2');
 
     if($isNew) {
-      //Check the "create" permission for the new records.
+      // Checks the "create" permission for the new records.
       if($canDo->get('core.create')) {
 	JToolBarHelper::apply('document.apply', 'JTOOLBAR_APPLY');
 	JToolBarHelper::save('document.save', 'JTOOLBAR_SAVE');
@@ -86,7 +99,7 @@ class OkeydocViewDocument extends JViewLegacy
 
       // If checked out, we can still save
       if($canDo->get('core.create')) {
-	//Note: Not yet possible as the linked file has to be downloaded again. 
+	// Note: Not yet possible as the linked file has to be downloaded again. 
 	//JToolBarHelper::save2copy('document.save2copy');
       }
     }
@@ -95,13 +108,15 @@ class OkeydocViewDocument extends JViewLegacy
   }
 
 
+  /**
+   * Includes possible css and Javascript files.
+   *
+   * @return  void
+   */
   protected function setDocument() 
   {
-    //Include a css file (if needed).
-    //$doc = JFactory::getDocument();
-    //$doc->addStyleSheet(JURI::base().'components/com_okeydoc/okeydoc.css');
+    $doc = JFactory::getDocument();
+    $doc->addStyleSheet(JURI::base().'components/com_okeydoc/okeydoc.css');
   }
 }
-
-
 
