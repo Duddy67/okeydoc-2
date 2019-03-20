@@ -8,6 +8,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+JLoader::register('FilemanagerTrait', JPATH_ADMINISTRATOR.'/components/com_okeydoc/traits/filemanager.php');
+
 
 /**
  * The Okey DOC 2 content plugin.
@@ -15,6 +17,8 @@ defined('_JEXEC') or die('Restricted access');
  */
 class plgContentOkeydoc extends JPlugin
 {
+  use FilemanagerTrait;
+
   protected $post;
   protected $jform;
 
@@ -54,8 +58,44 @@ class plgContentOkeydoc extends JPlugin
    *
    * @since   3.7.0
    */
-  public function onContentAfterDisplay($context, &$item, &$params, $limitstart)
+  public function onContentAfterDisplay($context, &$item, &$params, $limitstart = 0)
   {
+    if($context == 'com_content.categories' || $context == 'com_content.article') {
+      // Gets the item type from the context.
+      $itemType = substr($context, 12);
+
+      if($itemType == 'categories') {
+	// Use the singular word.
+	$itemType = 'category';
+      }
+
+      // Gets the documents linked to the article or category.
+      $db = JFactory::getDbo();
+      $query = $db->getQuery(true);
+      $query->select('d.title, d.id, d.file_size, d.file_icon, d.file_type')
+	    ->from('#__okeydoc_document AS d')
+	    ->join('INNER', '#__okeydoc_document_linking AS dl ON dl.doc_id=d.id')
+	    ->where('dl.item_id='.(int)$item->id)
+	    ->where('dl.item_type='.$db->Quote($itemType).' AND dl.linking_type="internal"');
+      $db->setQuery($query);
+      $documents = $db->loadObjectList();
+
+      if(!empty($documents)) {
+	// Converts the file size of each document.
+	foreach($documents as $document) {
+	  if($document->file_size != 'unknown') {
+	    $conversion = $this->byteConverter($document->file_size);
+	    $document->file_size = JText::sprintf('COM_OKEYDOC_BYTE_CONVERTER_'.$conversion['multiple'], $conversion['result']);
+	  }
+	  else {
+	    $document->file_size = JText::_('COM_OKEYDOC_UNKNOWN');
+	  }
+	}
+
+	// Displays the document list.
+	echo JLayoutHelper::render('list.documents', $documents, JPATH_SITE.'/components/com_okeydoc/layouts/');
+      }
+    }
   }
 
 
