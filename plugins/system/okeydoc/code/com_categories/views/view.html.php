@@ -134,8 +134,6 @@ class CategoriesViewCategories extends JViewLegacy
 			}
 		}
 
-		//
-		//$this->_path['template'] = JPATH_ROOT.'/plugins/system/notebook/code/com_categories/views/tmpl/';
 		// Override: Adds the path to the specific template.
 		$this->_addPath('template', JPATH_ROOT.'/plugins/system/okeydoc/code/com_categories/views/tmpl/');
 

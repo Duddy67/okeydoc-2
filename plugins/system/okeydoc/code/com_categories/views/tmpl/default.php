@@ -28,7 +28,7 @@ $saveOrder = ($listOrder == 'a.lft' && strtolower($listDirn) == 'asc');
 $parts     = explode('.', $extension, 2);
 $component = $parts[0];
 $section   = null;
-//Override: Adds one column.
+// Override: Adds one column.
 $columns   = 8;
 
 if (count($parts) > 1)
