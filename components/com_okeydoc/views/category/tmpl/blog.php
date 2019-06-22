@@ -103,7 +103,7 @@ var okeydoc = {
     <?php if(!empty($this->lead_items)) : ?>
 	    <div class="items-leading clearfix">
 	  <?php foreach($this->lead_items as &$item) : ?>
-		  <div class="leading-<?php echo $leadingcount; ?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>"
+		  <div class="leading-<?php echo $leadingcount; ?><?php echo $item->published == 0 ? ' system-unpublished' : null; ?>"
 			  itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
 			  <?php
 			  $this->item = & $item;
@@ -128,7 +128,7 @@ var okeydoc = {
 		  <div class="items-row cols-<?php echo (int) $this->columns; ?> <?php echo 'row-'.$row; ?> row-fluid clearfix">
 	  <?php endif; ?>
 	  <div class="span<?php echo round((12 / $this->columns)); ?>">
-		  <div class="item column-<?php echo $rowcount; ?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>"
+		  <div class="item column-<?php echo $rowcount; ?><?php echo $item->published == 0 ? ' system-unpublished' : null; ?>"
 		      itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
 		      <?php
 		      $this->item = & $item;

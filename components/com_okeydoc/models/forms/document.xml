@@ -87,6 +87,15 @@
 		class="inputbox" >
 	</field>
 
+	<field name="email_required" type="radio"
+	       class="btn-group btn-group-yesno"
+	       label="COM_OKEYDOC_FIELD_EMAIL_REQUIRED_LABEL"
+	       description="COM_OKEYDOC_FIELD_EMAIL_REQUIRED_DESC"
+	       default="0">
+	       <option value="1">JYES</option>
+	       <option value="0">JNO</option>
+	</field>
+
 	<!-- layout: publishingdata -->
 	<field id="id" name="id" type="hidden"
 	       class="inputbox"

@@ -16,6 +16,7 @@ CREATE TABLE `#__okeydoc_document` (
   `file_icon` VARCHAR(20) NOT NULL,
   `author` VARCHAR(80) NOT NULL,
   `downloads` INT UNSIGNED NOT NULL DEFAULT 0 ,
+  `email_required` TINYINT(1) NOT NULL DEFAULT 0 ,
   `published` TINYINT NOT NULL DEFAULT 0 ,
   `catid` INT UNSIGNED NOT NULL ,
   `checked_out` INT UNSIGNED NOT NULL DEFAULT 0 ,

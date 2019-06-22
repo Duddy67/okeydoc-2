@@ -10,6 +10,9 @@ defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 
+// Needed in the download layout.
+$this->item->view = 'document';
+
 // Create some shortcuts.
 $params = $this->item->params;
 $item = $this->item;
@@ -47,8 +50,27 @@ $item = $this->item;
 		echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
   <?php endif; ?>
 
-  <?php $link = JURI::base().'index.php?option=com_okeydoc&view=download&tmpl=component&id='.$this->item->id;
-	echo JLayoutHelper::render('document.download', array('item' => $this->item, 'params' => $params,
-							      'link' => $link, 'view' => 'document')); ?>
+  <?php $this->item->link = JURI::base().'index.php?option=com_okeydoc&view=download&tmpl=component&id='.$this->item->id;
+
+	if($this->item->email_required) : // Shows the button which display the modal window.  ?>
+	  <form>
+	    <button type="button" data-toggle="modal" onclick="jQuery( '#collapseModal' ).modal('show'); return true;" class="btn btn-success">
+	    <span class="icon-download" aria-hidden="true"></span>
+	    <?php echo JText::_('COM_OKEYDOC_DOWNLOAD'); ?></button>
+	    <?php /*echo JHtml::_('bootstrap.renderModal', 'collapseModal', array('title' => 'Hello',
+										  'footer' => $this->loadTemplate('email_footer')),
+										  $this->loadTemplate('email_body'));*/ ?>
+	    <?php echo JHtml::_('bootstrap.renderModal', 'collapseModal', array('title' => 'Hello',
+										'footer' => JLayoutHelper::render('document.email_modal_footer', $item)),
+										JLayoutHelper::render('document.email_modal_body')); ?>
+	  </form>
+  <?php else : // Shows the regular download button.
+	    echo JLayoutHelper::render('document.download', array('item' => $this->item));
+        endif; ?>
 </div>
+
+<?php
+// Loads the required scripts.
+$doc = JFactory::getDocument();
+$doc->addScript(JURI::base().'components/com_okeydoc/js/emailrequested.js');
 

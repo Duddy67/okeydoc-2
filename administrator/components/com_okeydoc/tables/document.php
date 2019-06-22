@@ -140,6 +140,11 @@ class OkeydocTableDocument extends JTable
       return false;
     }
 
+    if($this->access != 1) {
+      // This feature is only available with a Public access.
+      $this->email_required = 0;
+    }
+
     // In case of archiving the data of the current file has to be saved before being updated.
     if($this->jform['archive_file'] == 1) {
       $archive = array();
@@ -152,7 +157,7 @@ class OkeydocTableDocument extends JTable
     }
 
     // Now that the item data is ok let's move to the file data.
-    // Note: The file validity has been already checked in the model. 
+    // N.B: The file validity has been already checked in the model. 
     if(!$this->setFileData()) {
       return false;
     }

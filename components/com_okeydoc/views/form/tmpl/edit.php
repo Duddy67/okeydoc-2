@@ -75,8 +75,8 @@ Joomla.submitbutton = function(task)
 
 	<div class="tab-content">
 	    <div class="tab-pane active" id="details">
-	      <?php echo $this->form->getControlGroup('title'); 
-		    echo $this->form->getControlGroup('alias');
+	      <?php echo $this->form->renderField('title'); 
+		    echo $this->form->renderField('alias');
 		?>
 
 	      <?php if($this->form->getValue('id') != 0) : // Existing item. ?>
@@ -90,7 +90,7 @@ Joomla.submitbutton = function(task)
 		      </a>
 		    </div>
 		  </div>
-		<?php echo $this->form->getControlGroup('file_name'); ?>
+		<?php echo $this->form->renderField('file_name'); ?>
 
 		  <?php // Toggle button which hide/show the link method fields to replace the original file. ?>
 		  <span class="form-space"></span>
@@ -101,38 +101,44 @@ Joomla.submitbutton = function(task)
 	      <?php endif; ?>
 
 	      <?php
-		    echo $this->form->getControlGroup('file_location');
-		    echo $this->form->getControlGroup('uploaded_file');
-		    echo $this->form->getControlGroup('file_url');
-		    echo $this->form->getControlGroup('author');
-		    echo $this->form->getControlGroup('documenttext');
+		    echo $this->form->renderField('file_location');
+		    echo $this->form->renderField('uploaded_file');
+		    echo $this->form->renderField('file_url');
+
+		    if($this->form->getValue('access') == 1) {
+		      // This feature is only available with a Public access.
+		      echo $this->form->renderField('email_required');
+		    }
+
+		    echo $this->form->renderField('author');
+		    echo $this->form->renderField('documenttext');
 	      ?>
 	      </div>
 
 	      <div class="tab-pane" id="publishing">
-		<?php echo $this->form->getControlGroup('catid'); ?>
-		<?php echo $this->form->getControlGroup('tags'); ?>
-		<?php echo $this->form->getControlGroup('access'); ?>
+		<?php echo $this->form->renderField('catid'); ?>
+		<?php echo $this->form->renderField('tags'); ?>
+		<?php echo $this->form->renderField('access'); ?>
 
 		<?php if($this->item->params->get('access-change')) : ?>
-		  <?php echo $this->form->getControlGroup('published'); ?>
-		  <?php echo $this->form->getControlGroup('publish_up'); ?>
-		  <?php echo $this->form->getControlGroup('publish_down'); ?>
+		  <?php echo $this->form->renderField('published'); ?>
+		  <?php echo $this->form->renderField('publish_up'); ?>
+		  <?php echo $this->form->renderField('publish_down'); ?>
 		<?php endif; ?>
 	      </div>
 
 	      <div class="tab-pane" id="language">
-		<?php echo $this->form->getControlGroup('language'); ?>
+		<?php echo $this->form->renderField('language'); ?>
 	      </div>
 
 	      <div class="tab-pane" id="link-document">
-		<?php echo $this->form->getControlGroup('articleids'); ?>
+		<?php echo $this->form->renderField('articleids'); ?>
 
 		<?php if(!empty($this->extDocLinkings['article'])) { 
 			echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['article'], 'link_type' => 'article'), JPATH_ADMINISTRATOR.'/components/com_okeydoc/layouts'); 
 		      } ?>
 
-		<?php echo $this->form->getControlGroup('contcatids'); ?>
+		<?php echo $this->form->renderField('contcatids'); ?>
 
 		<?php if(!empty($this->extDocLinkings['category'])) { 
 			echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['category'], 'link_type' => 'category'), JPATH_ADMINISTRATOR.'/components/com_okeydoc/layouts'); 
@@ -141,8 +147,8 @@ Joomla.submitbutton = function(task)
 	      </div>
 
 	      <div class="tab-pane" id="metadata">
-		<?php echo $this->form->getControlGroup('metadesc'); ?>
-		<?php echo $this->form->getControlGroup('metakey'); ?>
+		<?php echo $this->form->renderField('metadesc'); ?>
+		<?php echo $this->form->renderField('metakey'); ?>
 	      </div>
 	    </div>
 

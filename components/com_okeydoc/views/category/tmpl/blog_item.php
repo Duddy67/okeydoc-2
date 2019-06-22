@@ -10,6 +10,8 @@ JHtml::_('behavior.framework');
 
 // Create shortcut for params.
 $params = $this->item->params;
+// Needed in the download layout.
+$this->item->view = 'category'; 
 ?>
 
 <div class="document-item">
@@ -55,14 +57,19 @@ $params = $this->item->params;
 
 	  if($params->get('show_download')) {     
 	    if($params->get('access-view')) {
-	      $link = JURI::base().'index.php?option=com_okeydoc&view=download&tmpl=component&id='.$this->item->id;
+	      $this->item->link = JURI::base().'index.php?option=com_okeydoc&view=download&tmpl=component&id='.$this->item->id;
 	    }
 	    else {
-	      $link = $comUserLink;
+	      $this->item->link = $comUserLink;
 	    }
 
-	    echo JLayoutHelper::render('document.download', array('item' => $this->item, 'params' => $params,
-								  'link' => $link, 'view' => 'category')); 
+	    if($this->item->email_required) {  ?>
+
+
+      <?php }
+	    else {
+	      echo JLayoutHelper::render('document.download', array('item' => $this->item)); 
+	    }
 	  }
    endif; ?>
 </div>

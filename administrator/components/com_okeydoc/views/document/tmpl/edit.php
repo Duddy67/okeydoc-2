@@ -64,12 +64,18 @@ Joomla.submitbutton = function(task)
 	      <?php endif; ?>
 
 	      <?php
-		    echo $this->form->getControlGroup('file_location');
-		    echo $this->form->getControlGroup('uploaded_file');
-		    echo $this->form->getControlGroup('archive_file');
-		    echo $this->form->getControlGroup('file_url');
-		    echo $this->form->getControlGroup('author');
-		    echo $this->form->getControlGroup('documenttext');
+		    echo $this->form->renderField('file_location');
+		    echo $this->form->renderField('uploaded_file');
+		    echo $this->form->renderField('archive_file');
+		    echo $this->form->renderField('file_url');
+
+		    if($this->form->getValue('access') == 1) {
+		      // This feature is only available with a Public access.
+		      echo $this->form->renderField('email_required');
+		    }
+
+		    echo $this->form->renderField('author');
+		    echo $this->form->renderField('documenttext');
 		?>
 	    </div>
 	</div>
@@ -82,13 +88,13 @@ Joomla.submitbutton = function(task)
       <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'attachment', JText::_('COM_OKEYDOC_TAB_DOCUMENT_LINKINGS', true)); ?>
       <div class="row-fluid form-horizontal-desktop">
 	<div class="span6">
-	  <?php echo $this->form->getControlGroup('articleids'); ?>
+	  <?php echo $this->form->renderField('articleids'); ?>
 
 	  <?php if(!empty($this->extDocLinkings['article'])) { 
 		  echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['article'], 'link_type' => 'article')); 
 		} ?>
 
-	  <?php echo $this->form->getControlGroup('contcatids'); ?>
+	  <?php echo $this->form->renderField('contcatids'); ?>
 
 	  <?php if(!empty($this->extDocLinkings['category'])) { 
 		  echo JLayoutHelper::render('document.linkings', array('ext_doc_linkings' => $this->extDocLinkings['category'], 'link_type' => 'category')); 

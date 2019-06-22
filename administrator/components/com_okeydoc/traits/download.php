@@ -26,13 +26,15 @@ trait DownloadTrait
     // Gets the user's access view.
     $user = JFactory::getUser();
 
+    $email = $jinput->get('email', '', 'string');
+//file_put_contents('debog_file.txt', print_r($email, true));
     if($version && !$isAdmin) {
       // Cannot download a previous version of the current file from the front-end. 
       echo '<div class="alert alert-no-items">'.JText::_('COM_OKEYDOC_DOWNLOAD_UNAUTHORISED').'</div>';
       return;
     }
 
-    if($id) {
+    if((int)$id) {
       // Retrieves some data from the document. 
       $db = JFactory::getDbo();
       $query = $db->getQuery(true);
@@ -44,22 +46,23 @@ trait DownloadTrait
 	               'd.title,d.access,d.published,d.publish_up,d.publish_down')
 	      ->from('#__okeydoc_archive AS a')
 	      ->join('LEFT', '#__okeydoc_document AS d ON d.id=a.doc_id')
-	      ->where('a.doc_id='.$id)
+	      ->where('a.doc_id='.(int)$id)
 	      ->where('a.version='.$version);
       }
-      else { // The current file.
-	$query->select('published,publish_up,publish_down,access,title,file_path,'.
-	               'file_name,file_type,file_size,file_location')
+      // The current file.
+      else { 
+	$query->select('published,publish_up,publish_down,access,title,email_required,'.
+	               'file_path,file_name,file_type,file_size,file_location')
 	      ->from('#__okeydoc_document')
-	      ->where('id='.$id);
+	      ->where('id='.(int)$id);
       }
 
       $db->setQuery($query);
       $document = $db->loadObject();
 
       // Checks the publication and publication dates (start and stop) of the document.
-      // Note: Those checkings are not taken in account if the file is downloaded from 
-      //       the admin part (back-end).
+      // N.B: Those checkings are not taken in account if the file is downloaded from 
+      //      the admin part (back-end).
 
       // The document is unpublished.
       if(!$isAdmin && $document->published != 1) {
@@ -100,7 +103,7 @@ trait DownloadTrait
 	if($document->file_path) {
 	  if(!$version) {
 	    // Increment the download counter for this document.
-	    // Note: Previous versions of the current file are not incremented.
+	    // N.B: Previous versions of the current file are not incremented.
 	    $query->clear();
 	    $query->update('#__okeydoc_document')
 		  ->set('downloads=downloads+1')
