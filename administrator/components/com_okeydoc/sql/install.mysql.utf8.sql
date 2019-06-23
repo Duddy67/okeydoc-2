@@ -73,3 +73,14 @@ CREATE TABLE `#__okeydoc_archive` (
   INDEX `idx_doc_id` (`doc_id` ASC) )
 ENGINE = MyISAM DEFAULT CHARSET=utf8;
 
+-- -----------------------------------------------------
+-- Table `#__okeydoc_email`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `#__okeydoc_email`;
+CREATE TABLE `#__okeydoc_email` (
+  `doc_id` INT UNSIGNED NOT NULL ,
+  `email` VARCHAR(255) NOT NULL ,
+  `downloaded` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
+  INDEX `idx_doc_id` (`doc_id` ASC) )
+ENGINE = MyISAM DEFAULT CHARSET=utf8;
+

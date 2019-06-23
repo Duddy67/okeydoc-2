@@ -187,10 +187,13 @@ var okeydoc = {
 
 <?php
 
+// Loads the required scripts.
+$doc = JFactory::getDocument();
+$doc->addScript(JURI::base().'components/com_okeydoc/js/emailrequired.js');
+
 if($this->params->get('filter_field') == 'title') {
   // Loads the JQuery autocomplete file.
   JHtml::_('script', 'media/jui/js/jquery.autocomplete.min.js');
-  $doc = JFactory::getDocument();
   // Loads our js script.
   $doc->addScript(JURI::base().'components/com_okeydoc/js/autocomplete.js');
 }

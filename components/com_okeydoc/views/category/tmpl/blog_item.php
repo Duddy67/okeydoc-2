@@ -63,10 +63,18 @@ $this->item->view = 'category';
 	      $this->item->link = $comUserLink;
 	    }
 
-	    if($this->item->email_required) {  ?>
+	    if($this->item->email_required) { // Shows the button which displays the modal window. ?>
 
+	      <button type="button" data-toggle="modal" onclick="jQuery( '#collapseModal' ).modal('show'); return true;" class="btn btn-success">
+	      <span class="icon-download" aria-hidden="true"></span>
+	      <?php echo JText::_('COM_OKEYDOC_DOWNLOAD'); ?></button>
+	      <?php echo JHtml::_('bootstrap.renderModal', 'collapseModal',
+				  array('title' => JText::_('COM_OKEYDOC_MESSAGE_EMAIL_REQUIRED'),
+					'footer' => JLayoutHelper::render('document.email_modal_footer',
+				  $this->item)), JLayoutHelper::render('document.email_modal_body')); ?>
 
       <?php }
+	    // Shows the regular download button.
 	    else {
 	      echo JLayoutHelper::render('document.download', array('item' => $this->item)); 
 	    }

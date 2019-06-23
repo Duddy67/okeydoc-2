@@ -9,10 +9,14 @@ defined('JPATH_BASE') or die;
 
 $item = $displayData['item'];
 
-$elemId = '';
+$elemId = $style = '';
 if($item->email_required) {
   // A id is needed as it is used by the JS functions. 
   $elemId = 'id="download-btn"';
+}
+
+if($item->email_required) {
+  $style = 'style="display:inline;"';
 }
 
 $target = 'target="blank"';
@@ -22,7 +26,7 @@ if($item->view == 'category' && !$item->params->get('access-view')) {
 }
 ?>
 
-<p class="download">
+  <p class="download" <?php echo $style; ?>>
 	<a class="btn btn-success" <?php echo $elemId; ?> href="<?php echo $item->link; ?>" <?php echo $target; ?> itemprop="url">
 		<span class="icon-download"></span>
 		<?php if ($item->view == 'category' && !$item->params->get('access-view')) :

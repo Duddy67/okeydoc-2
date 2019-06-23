@@ -25,9 +25,9 @@ trait DownloadTrait
     $version = $jinput->get('version', 0, 'uint');
     // Gets the user's access view.
     $user = JFactory::getUser();
-
+    // Gets a possible email variable.
     $email = $jinput->get('email', '', 'string');
-//file_put_contents('debog_file.txt', print_r($email, true));
+
     if($version && !$isAdmin) {
       // Cannot download a previous version of the current file from the front-end. 
       echo '<div class="alert alert-no-items">'.JText::_('COM_OKEYDOC_DOWNLOAD_UNAUTHORISED').'</div>';
@@ -70,6 +70,12 @@ trait DownloadTrait
 	return;
       }
 
+      // Checks again the given email (in case JS checking has failed). 
+      if(!$isAdmin && $document->email_required && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+	echo '<div class="alert alert-no-items">'.JText::_('COM_OKEYDOC_INVALID_EMAIL').'</div>';
+	return;
+      }
+
       // Gets the current date and time (UTC).
       $now = JFactory::getDate()->toSql();
 
@@ -108,6 +114,16 @@ trait DownloadTrait
 	    $query->update('#__okeydoc_document')
 		  ->set('downloads=downloads+1')
 		  ->where('id='.$id);
+	    $db->setQuery($query);
+	    $db->execute();
+	  }
+
+	  // Inserts the retrieved email. 
+	  if(!$isAdmin && $document->email_required) {
+	    $query->clear();
+	    $query->insert('#__okeydoc_email')
+		  ->columns(array('doc_id', 'email', 'downloaded'))
+		  ->values($id.','.$db->Quote($email).','.$db->Quote($now));
 	    $db->setQuery($query);
 	    $db->execute();
 	  }
