@@ -8,6 +8,8 @@
 // No direct access to this file.
 defined('_JEXEC') or die; 
 
+use Joomla\Utilities\ArrayHelper;
+
 
 class OkeydocModelDocuments extends JModelList
 {
@@ -74,23 +76,31 @@ class OkeydocModelDocuments extends JModelList
     $search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
     $this->setState('filter.search', $search);
 
-    $access = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access');
-    $this->setState('filter.access', $access);
-
-    $userId = $app->getUserStateFromRequest($this->context.'.filter.user_id', 'filter_user_id');
-    $this->setState('filter.user_id', $userId);
-
     $published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '');
     $this->setState('filter.published', $published);
-
-    $categoryId = $this->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id');
-    $this->setState('filter.category_id', $categoryId);
 
     $language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language');
     $this->setState('filter.language', $language);
 
+        // Used with the multiple list selections.
+    $formSubmited = $app->input->post->get('form_submited');
+
+    $categoryId = $this->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id');
+    $userId = $this->getUserStateFromRequest($this->context.'.filter.user_id', 'filter_user_id');
     $tag = $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag');
-    $this->setState('filter.tag', $tag);
+    $access = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access');
+
+    if($formSubmited) {
+      // Gets the current value of the fields.
+      $categoryId = $app->input->post->get('category_id');
+      $this->setState('filter.category_id', $categoryId);
+      $userId = $app->input->post->get('user_id');
+      $this->setState('filter.user_id', $userId);
+      $tag = $app->input->post->get('tag');
+      $this->setState('filter.tag', $tag);
+      $access = $app->input->post->get('access');
+      $this->setState('filter.access', $access);
+    }
 
     // List state information.
     parent::populateState('d.title', 'asc');
@@ -122,11 +132,13 @@ class OkeydocModelDocuments extends JModelList
   {
     // Compile the store id.
     $id .= ':'.$this->getState('filter.search');
-    $id .= ':'.$this->getState('filter.access');
     $id .= ':'.$this->getState('filter.published');
-    $id .= ':'.$this->getState('filter.user_id');
-    $id .= ':'.$this->getState('filter.category_id');
     $id .= ':'.$this->getState('filter.language');
+    $id .= ':'.serialize($this->getState('filter.access'));
+    $id .= ':'.serialize($this->getState('filter.user_id'));
+    $id .= ':'.serialize($this->getState('filter.category_id'));
+    $id .= ':'.serialize($this->getState('filter.tag'));
+
 
     return parent::getStoreId($id);
   }
@@ -173,6 +185,7 @@ class OkeydocModelDocuments extends JModelList
 
     // Filter by component category.
     $categoryId = $this->getState('filter.category_id');
+
     if(is_numeric($categoryId)) {
       $query->where('d.catid = '.(int)$categoryId);
     }
@@ -195,8 +208,15 @@ class OkeydocModelDocuments extends JModelList
     }
 
     // Filter by access level.
-    if($access = $this->getState('filter.access')) {
+    $access = $this->getState('filter.access');
+
+    if(is_numeric($access)) {
       $query->where('d.access='.(int) $access);
+    }
+    elseif (is_array($access)) {
+      $access = ArrayHelper::toInteger($access);
+      $access = implode(',', $access);
+      $query->where('d.access IN ('.$access.')');
     }
 
     // Filter by access level on categories.
@@ -217,9 +237,15 @@ class OkeydocModelDocuments extends JModelList
 
     // Filter by user.
     $userId = $this->getState('filter.user_id');
+
     if(is_numeric($userId)) {
       $type = $this->getState('filter.user_id.include', true) ? '= ' : '<>';
       $query->where('d.created_by'.$type.(int) $userId);
+    }
+    elseif(is_array($userId)) {
+      $userId = ArrayHelper::toInteger($userId);
+      $userId = implode(',', $userId);
+      $query->where('d.created_by IN ('.$userId.')');
     }
 
     // Filter by language.
@@ -227,14 +253,28 @@ class OkeydocModelDocuments extends JModelList
       $query->where('d.language = '.$db->quote($language));
     }
 
-    // Filter by a single tag.
+    // Filter by a single or group of tags.
+    $hasTag = false;
     $tagId = $this->getState('filter.tag');
 
     if(is_numeric($tagId)) {
-      $query->where($db->quoteName('tagmap.tag_id').' = '.(int)$tagId)
-	    ->join('LEFT', $db->quoteName('#__contentitem_tag_map', 'tagmap').
+      $hasTag = true;
+      $query->where($db->quoteName('tagmap.tag_id').' = '.(int)$tagId);
+    }
+    elseif(is_array($tagId)) {
+      $tagId = ArrayHelper::toInteger($tagId);
+      $tagId = implode(',', $tagId);
+
+      if(!empty($tagId)) {
+	$hasTag = true;
+	$query->where($db->quoteName('tagmap.tag_id').' IN ('.$tagId.')');
+      }
+    }
+
+    if($hasTag) {
+      $query->join('LEFT', $db->quoteName('#__contentitem_tag_map', 'tagmap').
 		   ' ON '.$db->quoteName('tagmap.content_item_id').' = '.$db->quoteName('d.id').
-		   ' AND '.$db->quoteName('tagmap.type_alias').' = '.$db->quote('com_okeydoc.document'));
+		   ' AND '.$db->quoteName('tagmap.type_alias').' = '.$db->quote('com_notebook.note'));
     }
 
     // Detects whether the query is used for a modal view, (a function name is always passed through the link).

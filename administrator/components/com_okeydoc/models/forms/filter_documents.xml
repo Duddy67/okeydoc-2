@@ -19,24 +19,27 @@
 		       type="category"
 		       label="JOPTION_FILTER_CATEGORY"
 		       extension="com_okeydoc"
+		       multiple="true"
+		       class="multipleCategories"
 		       description="JOPTION_FILTER_CATEGORY_DESC"
 		       onchange="this.form.submit();"
 		       published="0,1,2">
-		       <option value="">JOPTION_SELECT_CATEGORY</option>
 		</field>
 
 		<field name="access"
 		       type="accesslevel"
+		       multiple="true"
+		       class="multipleAccessLevels"
 		       label="JOPTION_FILTER_ACCESS"
 		       description="JOPTION_FILTER_ACCESS_DESC"
 		       onchange="this.form.submit();">
-		       <option value="">JOPTION_SELECT_ACCESS</option>
 		</field>
 
 		<field name="user_id"
 	               type="componentuser"
+		       multiple="true"
+		       class="multipleUsers"
 		       onchange="this.form.submit();" >
-		       <option value="">COM_OKEYDOC_OPTION_SELECT_USER</option>
 		</field>
 
 		<field name="language"
@@ -50,12 +53,15 @@
 
 		<field name="tag"
 		       type="tag"
+		       multiple="true"
+		       class="multipleTags"
 		       mode="nested"
 		       label="JOPTION_FILTER_TAG"
 		       description="JOPTION_FILTER_TAG_DESC"
 		       onchange="this.form.submit();">
-		       <option value="">JOPTION_SELECT_TAG</option>
 		</field>
+
+		<input type="hidden" name="form_submited" value="1"/>
 	</fields>
 
 	<fields name="list">

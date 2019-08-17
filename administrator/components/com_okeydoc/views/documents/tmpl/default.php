@@ -10,6 +10,10 @@ defined( '_JEXEC' ) or die;
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
+JHtml::_('formbehavior.chosen', '.multipleCategories', null, array('placeholder_text_multiple' => JText::_('JOPTION_SELECT_CATEGORY')));
+JHtml::_('formbehavior.chosen', '.multipleUsers',null,array('placeholder_text_multiple' => JText::_('COM_OKEYDOC_OPTION_SELECT_USER')));
+JHtml::_('formbehavior.chosen', '.multipleTags', null, array('placeholder_text_multiple' => JText::_('JOPTION_SELECT_TAG')));
+JHtml::_('formbehavior.chosen', '.multipleAccessLevels', null, array('placeholder_text_multiple' => JText::_('JOPTION_SELECT_ACCESS')));
 JHtml::_('formbehavior.chosen', 'select');
 
 
