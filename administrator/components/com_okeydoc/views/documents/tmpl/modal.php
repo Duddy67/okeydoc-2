@@ -123,7 +123,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<div class="pull-left">
           <?php if($function == 'insertDocumentLink') : ?>
 		  <a href="javascript:void(0)" onclick="if (window.parent)
-		  window.parent.<?php echo $this->escape($function);?>('<?php echo $this->escape(addslashes($item->title)); ?>','<?php echo JUri::root().'index.php?option=com_okeydoc&tmpl=component&view=download&id='.$item->id; ?>');"><?php echo $this->escape($item->title); ?></a>
+		  window.parent.<?php echo $this->escape($function);?>('<?php echo $this->escape(addslashes($item->title)); ?>','<?php echo JUri::root().'index.php?option=com_okeydoc&tmpl=component&view=download&link=external&id='.$item->id; ?>');"><?php echo $this->escape($item->title); ?></a>
           <?php else : ?>
 		  <a href="javascript:void(0)" onclick="if (window.parent)
 		  window.parent.<?php echo $this->escape($function);?>('<?php echo $item->id; ?>','<?php echo $this->escape(addslashes($item->title)); ?>','<?php echo $item->catid; ?>');"><?php echo $this->escape($item->title); ?></a>

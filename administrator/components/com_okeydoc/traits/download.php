@@ -15,6 +15,37 @@ defined('_JEXEC') or die; //No direct access to this file.
 
 trait DownloadTrait
 {
+  /**
+   * Checks if an email is required for a given document.
+   *
+   * @param   integer  $documentId	The id of the document.
+   *
+   * @return  integer			1 if an email is required, 0 otherwise.
+   *
+   */
+  public function isEmailRequired($documentId)
+  {
+    $db = JFactory::getDbo();
+    $query = $db->getQuery(true);
+
+    $query->select('email_required')
+	  ->from('#__okeydoc_document')
+	  ->where('id='.(int)$documentId);
+    $db->setQuery($query);
+
+    return (int)$db->loadResult();
+  }
+
+
+  /**
+   * Treats the file downloading according to the data passed through the url query.
+   *
+   * @param   boolean $isAdmin	Flag to determine if the data comes from the administration or
+   * 				from the site.
+   *
+   * @return  void
+   *
+   */
   public function downloadFile($isAdmin = false)
   {
     // Gets the data passed through the url query.

@@ -18,6 +18,8 @@ class OkeydocViewDownload extends JViewLegacy
 {
   use DownloadTrait;
 
+  public $item;
+
   /**
    * Execute and display a template script.
    *
@@ -30,7 +32,22 @@ class OkeydocViewDownload extends JViewLegacy
    */
   public function display($tpl = null)
   {
-    $this->downloadFile();
+    $jinput = JFactory::getApplication()->input;
+    $docId = (int)$jinput->get('id', 0, 'integer');
+
+    // The document link comes from an external component and an email is required to download the document.
+    if($jinput->get('link', '', 'string') == 'external' && $this->isEmailRequired($docId)) {
+      $this->item = new JObject;
+      $this->item->view = 'external';
+      $this->item->email_required = true;
+      $this->item->link = JURI::base().'index.php?option=com_okeydoc&view=download&tmpl=component&id='.$docId;
+
+      parent::display($tpl);
+    }
+    else {
+      // Treats the file downloading.
+      $this->downloadFile();
+    }
   }
 }
 
